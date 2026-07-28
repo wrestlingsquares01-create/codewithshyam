@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel | Code With #Shyam</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0a0a1a;
+      color: #e0e0e0;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    /* Login Screen */
+    .login-screen {
+      max-width: 400px;
+      margin: 100px auto;
+      background: #111133;
+      border-radius: 15px;
+      padding: 40px 30px;
+      text-align: center;
+      border: 2px solid #ff6600;
+    }
+
+    .login-screen h1 {
+      color: #ff6600;
+      margin-bottom: 10px;
+      font-size: 1.8rem;
+    }
+
+    .login-screen p {
+      color: #aaa;
+      margin-bottom: 25px;
+      font-size: 0.9rem;
+    }
+
+    .login-input {
+      width: 100%;
+      padding: 14px 15px;
+      background: #0a0a1a;
+      border: 2px solid #333;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+      margin-bottom: 15px;
+      text-align: center;
+      letter-spacing: 3px;
+    }
+
+    .login-input:focus { border-color: #ff6600; }
+
+    .login-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #ff6600, #ff0066);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .login-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 20px rgba(255, 102, 0, 0.5);
+    }
+
+    .error {
+      color: #ff4444;
+      margin-top: 10px;
+      font-size: 0.9rem;
+      display: none;
+    }
+
+    /* Admin Dashboard */
+    .admin-dashboard {
+      display: none;
+    }
+
+    .admin-dashboard.active { display: block; }
+
+    .admin-header {
+      background: linear-gradient(135deg, #ff6600, #ff0066);
+      color: #fff;
+      padding: 20px 25px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .admin-header h1 { font-size: 1.5rem; }
+    .admin-header p { font-size: 0.9rem; opacity: 0.9; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      background: #111133;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      border-left: 4px solid #ff6600;
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #ff6600;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: #aaa;
+      margin-top: 5px;
+    }
+
+    .chats-layout {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 20px;
+      min-height: 500px;
+    }
+
+    /* Users List */
+    .users-list {
+      background: #111133;
+      border-radius: 12px;
+      padding: 15px;
+      max-height: 600px;
+      overflow-y: auto;
+    }
+
+    .users-list h3 {
+      color: #ff6600;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #333;
+    }
+
+    .user-item {
+      padding: 12px;
+      background: #1a1a3e;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-left: 3px solid transparent;
+    }
+
+    .user-item:hover {
+      background: #252550;
+      border-left-color: #ff6600;
+    }
+
+    .user-item.active {
+      background: #252550;
+      border-left-color: #ff6600;
+    }
+
+    .user-name {
+      color: #fff;
+      font-weight: bold;
+      font-size: 0.95rem;
+    }
+
+    .user-class {
+      color: #aaa;
+      font-size: 0.8rem;
+      margin-top: 3px;
+    }
+
+    .user-time {
+      color: #666;
+      font-size: 0.75rem;
+      margin-top: 3px;
+    }
+
+    .unread-badge {
+      background: #ff0066;
+      color: #fff;
+      border-radius: 50%;
+      padding: 2px 8px;
+      font-size: 0.75rem;
+      float: right;
+    }
+
+    /* Chat Area */
+    .chat-area {
+      background: #111133;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .chat-area-header {
+      background: #1a1a3e;
+      padding: 15px 20px;
+      border-bottom: 1px solid #333;
+    }
+
+    .chat-area-header h3 { color: #ff6600; }
+    .chat-area-header p { color: #aaa; font-size: 0.85rem; margin-top: 3px; }
+
+    .chat-messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      max-height: 400px;
+      min-height: 300px;
+    }
+
+    .no-chat {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 300px;
+      color: #666;
+      text-align: center;
+    }
+
+    .msg {
+      margin-bottom: 12px;
+      display: flex;
+    }
+
+    .msg.student { justify-content: flex-start; }
+    .msg.admin { justify-content: flex-end; }
+
+    .msg-bubble {
+      max-width: 70%;
+      padding: 10px 15px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+    }
+
+    .msg.student .msg-bubble {
+      background: #1a1a3e;
+      color: #fff;
+    }
+
+    .msg.admin .msg-bubble {
+      background: linear-gradient(135deg, #ff6600, #ff0066);
+      color: #fff;
+    }
+
+    .msg-time {
+      font-size: 0.7rem;
+      color: #666;
+      margin-top: 3px;
+    }
+
+    .reply-area {
+      padding: 15px;
+      background: #1a1a3e;
+      display: flex;
+      gap: 10px;
+      border-top: 1px solid #333;
+    }
+
+    .reply-input {
+      flex: 1;
+      padding: 12px 15px;
+      background: #0a0a1a;
+      border: 1px solid #333;
+      border-radius: 20px;
+      color: #fff;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .reply-input:focus { border-color: #ff6600; }
+
+    .reply-btn {
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #ff6600, #ff0066);
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .reply-btn:hover {
+      transform: scale(1.05);
+    }
+
+    .logout-btn {
+      padding: 8px 20px;
+      background: transparent;
+      border: 2px solid #fff;
+      color: #fff;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    @media (max-width: 800px) {
+      .chats-layout { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- LOGIN SCREEN -->
+    <div class="login-screen" id="loginScreen">
+      <h1>🔐 Admin Panel</h1>
+      <p>Sirf Shyam Sir hi login kar sakte hain</p>
+      <input type="password" class="login-input" id="passwordInput" placeholder="Password" onkeypress="if(event.key==='Enter') checkPassword()" />
+      <button class="login-btn" onclick="checkPassword()">Login 🚀</button>
+      <div class="error" id="errorMsg">❌ Galat password! Dobara try kar</div>
+    </div>
+
+    <!-- ADMIN DASHBOARD -->
+    <div class="admin-dashboard" id="adminDashboard">
+      <div class="admin-header">
+        <div>
+          <h1>👑 Shyam Sir - Admin Panel</h1>
+          <p>Sab students ke messages ek jagah</p>
+        </div>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+      </div>
+
+      <div class="stats">
+        <div class="stat-card">
+          <div class="stat-number" id="totalUsers">0</div>
+          <div class="stat-label">Total Students</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="totalMessages">0</div>
+          <div class="stat-label">Total Messages</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="activeToday">0</div>
+          <div class="stat-label">Active Today</div>
+        </div>
+      </div>
+
+      <div class="chats-layout">
+        <div class="users-list">
+          <h3>👥 Students</h3>
+          <div id="usersList"></div>
+        </div>
+
+        <div class="chat-area">
+          <div class="chat-area-header" id="chatHeader">
+            <h3>Select a student</h3>
+            <p>Left side se student choose karo</p>
+          </div>
+
+          <div class="chat-messages" id="chatMessages">
+            <div class="no-chat">
+              <div>
+                <div style="font-size:3rem;">💬</div>
+                <p style="margin-top:10px;">Koi student select karo</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="reply-area" id="replyArea" style="display:none;">
+            <input type="text" class="reply-input" id="replyInput" placeholder="Reply likho..." onkeypress="if(event.key==='Enter') sendReply()" />
+            <button class="reply-btn" onclick="sendReply()">Send ➤</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+    import { getDatabase, ref, push, onValue, get } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC8QH1r20GnrSpY9jfxaZKbxSX7OOwA5AY",
+      authDomain: "codewithshyam-86c96.firebaseapp.com",
+      databaseURL: "https://codewithshyam-86c96-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "codewithshyam-86c96",
+      storageBucket: "codewithshyam-86c96.firebasestorage.app",
+      messagingSenderId: "275205226924",
+      appId: "1:275205226924:web:81d1961f413fa6ac4e3a09"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // ⚠️ IMPORTANT: YAHAN APNA PASSWORD DAAL!
+    const ADMIN_PASSWORD = "shyam@123";
+
+    let currentUserId = null;
+    let currentUserName = '';
+
+    window.checkPassword = function() {
+      const pass = document.getElementById('passwordInput').value;
+      if (pass === ADMIN_PASSWORD) {
+        localStorage.setItem('adminLoggedIn', 'true');
+        showDashboard();
+      } else {
+        document.getElementById('errorMsg').style.display = 'block';
+        document.getElementById('passwordInput').value = '';
+      }
+    };
+
+    window.logout = function() {
+      localStorage.removeItem('adminLoggedIn');
+      location.reload();
+    };
+
+    // Auto login if session exists
+    if (localStorage.getItem('adminLoggedIn') === 'true') {
+      showDashboard();
+    }
+
+    function showDashboard() {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('adminDashboard').classList.add('active');
+      loadAllChats();
+    }
+
+    function loadAllChats() {
+      const chatsRef = ref(db, 'chats');
+      onValue(chatsRef, (snapshot) => {
+        const data = snapshot.val();
+        const usersList = document.getElementById('usersList');
+        usersList.innerHTML = '';
+
+        if (!data) {
+          usersList.innerHTML = '<p style="color:#666; text-align:center; padding:20px;">Koi messages nahi abhi</p>';
+          document.getElementById('totalUsers').textContent = '0';
+          document.getElementById('totalMessages').textContent = '0';
+          return;
+        }
+
+        let totalMsgs = 0;
+        let activeToday = 0;
+        const today = new Date().setHours(0,0,0,0);
+
+        const users = Object.entries(data);
+        users.sort((a, b) => {
+          const timeA = a[1].info?.lastActive || 0;
+          const timeB = b[1].info?.lastActive || 0;
+          return timeB - timeA;
+        });
+
+        users.forEach(([userId, userData]) => {
+          const info = userData.info || {};
+          const messages = userData.messages || {};
+          const msgCount = Object.keys(messages).length;
+          totalMsgs += msgCount;
+
+          if (info.lastActive >= today) activeToday++;
+
+          const lastActive = info.lastActive ? new Date(info.lastActive) : null;
+          const timeStr = lastActive ? formatTime(lastActive) : '';
+
+          const userDiv = document.createElement('div');
+          userDiv.className = 'user-item';
+          userDiv.onclick = () => selectUser(userId, info.name || 'Unknown', info.class || '');
+          userDiv.innerHTML = `
+            <div class="user-name">${info.name || 'Unknown'} <span class="unread-badge">${msgCount}</span></div>
+            <div class="user-class">${info.class || 'N/A'}</div>
+            <div class="user-time">${timeStr}</div>
+          `;
+
+          if (currentUserId === userId) {
+            userDiv.classList.add('active');
+          }
+
+          usersList.appendChild(userDiv);
+        });
+
+        document.getElementById('totalUsers').textContent = users.length;
+        document.getElementById('totalMessages').textContent = totalMsgs;
+        document.getElementById('activeToday').textContent = activeToday;
+
+        // Reload current chat if selected
+        if (currentUserId) {
+          loadUserMessages(currentUserId);
+        }
+      });
+    }
+
+    window.selectUser = function(userId, name, cls) {
+      currentUserId = userId;
+      currentUserName = name;
+
+      document.getElementById('chatHeader').innerHTML = `
+        <h3>${name}</h3>
+        <p>${cls}</p>
+      `;
+
+      document.getElementById('replyArea').style.display = 'flex';
+
+      // Highlight active
+      document.querySelectorAll('.user-item').forEach(el => el.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+
+      loadUserMessages(userId);
+    };
+
+    function loadUserMessages(userId) {
+      const messagesRef = ref(db, 'chats/' + userId + '/messages');
+      onValue(messagesRef, (snapshot) => {
+        const chatMessages = document.getElementById('chatMessages');
+        chatMessages.innerHTML = '';
+
+        const data = snapshot.val();
+        if (!data) {
+          chatMessages.innerHTML = '<div class="no-chat"><p>Koi messages nahi</p></div>';
+          return;
+        }
+
+        const sorted = Object.values(data).sort((a, b) => a.timestamp - b.timestamp);
+        sorted.forEach(msg => {
+          const msgDiv = document.createElement('div');
+          msgDiv.className = 'msg ' + (msg.sender === 'admin' ? 'admin' : 'student');
+
+          const d = new Date(msg.timestamp);
+          const time = d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
+
+          msgDiv.innerHTML = `
+            <div>
+              <div class="msg-bubble">${msg.text}</div>
+              <div class="msg-time">${time}</div>
+            </div>
+          `;
+          chatMessages.appendChild(msgDiv);
+        });
+
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      });
+    }
+
+    window.sendReply = function() {
+      const input = document.getElementById('replyInput');
+      const text = input.value.trim();
+      if (!text || !currentUserId) return;
+
+      const messagesRef = ref(db, 'chats/' + currentUserId + '/messages');
+      push(messagesRef, {
+        text: text,
+        sender: 'admin',
+        senderName: 'Shyam Sir',
+        timestamp: Date.now()
+      });
+
+      input.value = '';
+    };
+
+    function formatTime(date) {
+      const now = new Date();
+      const diff = now - date;
+      const mins = Math.floor(diff / 60000);
+      const hours = Math.floor(diff / 3600000);
+      const days = Math.floor(diff / 86400000);
+
+      if (mins < 1) return 'Just now';
+      if (mins < 60) return mins + ' min ago';
+      if (hours < 24) return hours + ' hour ago';
+      return days + ' day ago';
+    }
+  </script>
+</body>
+</html>
