@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz - Chapter 1 | Code With #Shyam</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0a0a1a;
+      color: #e0e0e0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+    }
+
+    .quiz-container {
+      max-width: 700px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .quiz-header {
+      text-align: center;
+      padding: 25px;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      border-radius: 15px;
+      border: 1px solid #00f7ff33;
+      margin-bottom: 25px;
+    }
+
+    .quiz-header h1 {
+      font-size: 1.8rem;
+      color: #00f7ff;
+      text-shadow: 0 0 10px rgba(0, 247, 255, 0.5);
+    }
+
+    .quiz-header p {
+      color: #aaa;
+      margin-top: 5px;
+      font-size: 0.95rem;
+    }
+
+    .quiz-header .brand {
+      color: #fff;
+      font-weight: bold;
+      font-size: 1rem;
+      margin-top: 8px;
+    }
+
+    /* Progress Bar */
+    .progress-section {
+      margin-bottom: 20px;
+    }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 8px;
+      background: #1a1a3e;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(to right, #00f7ff, #00ff88);
+      border-radius: 10px;
+      transition: width 0.5s ease;
+      width: 0%;
+    }
+
+    .progress-text {
+      text-align: right;
+      font-size: 0.85rem;
+      color: #888;
+      margin-top: 5px;
+    }
+
+    /* Question Card */
+    .question-card {
+      background: #111133;
+      border-radius: 12px;
+      padding: 25px;
+      border-left: 4px solid #00f7ff;
+      margin-bottom: 20px;
+      animation: slideIn 0.4s ease;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .question-number {
+      color: #00f7ff;
+      font-size: 0.9rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .question-text {
+      font-size: 1.15rem;
+      color: #fff;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    /* Options */
+    .options { display: flex; flex-direction: column; gap: 10px; }
+
+    .option-btn {
+      padding: 14px 18px;
+      background: #1a1a3e;
+      border: 2px solid #333;
+      border-radius: 10px;
+      color: #ccc;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: left;
+    }
+
+    .option-btn:hover {
+      border-color: #00f7ff;
+      background: #00f7ff11;
+      color: #fff;
+      transform: translateX(5px);
+    }
+
+    .option-btn.correct {
+      border-color: #00ff88 !important;
+      background: #00ff8822 !important;
+      color: #00ff88 !important;
+      font-weight: bold;
+    }
+
+    .option-btn.wrong {
+      border-color: #ff4444 !important;
+      background: #ff444422 !important;
+      color: #ff4444 !important;
+    }
+
+    .option-btn.disabled {
+      pointer-events: none;
+    }
+
+    /* Explanation */
+    .explanation {
+      margin-top: 15px;
+      padding: 12px;
+      background: #1a1a00;
+      border: 1px solid #ffa500;
+      border-radius: 8px;
+      color: #ffa500;
+      font-size: 0.9rem;
+      display: none;
+    }
+
+    .explanation.show { display: block; animation: slideIn 0.3s ease; }
+
+    /* Next Button */
+    .next-btn {
+      display: none;
+      margin-top: 15px;
+      padding: 12px 30px;
+      background: linear-gradient(135deg, #00f7ff, #0088ff);
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+
+    .next-btn:hover { transform: translateY(-2px); box-shadow: 0 0 15px rgba(0, 247, 255, 0.4); }
+    .next-btn.show { display: block; }
+
+    /* Score Section */
+    .score-section {
+      display: none;
+      text-align: center;
+    }
+
+    .score-section.show { display: block; }
+
+    .score-card {
+      background: linear-gradient(135deg, #0f0c29, #302b63);
+      border-radius: 15px;
+      padding: 40px;
+      border: 2px solid #00f7ff33;
+    }
+
+    .score-emoji { font-size: 4rem; margin-bottom: 15px; }
+
+    .score-title {
+      font-size: 1.8rem;
+      color: #00f7ff;
+      margin-bottom: 10px;
+    }
+
+    .score-number {
+      font-size: 3.5rem;
+      font-weight: bold;
+      margin: 15px 0;
+    }
+
+    .score-number.excellent { color: #00ff88; text-shadow: 0 0 20px rgba(0, 255, 136, 0.5); }
+    .score-number.good { color: #ffa500; text-shadow: 0 0 20px rgba(255, 165, 0, 0.5); }
+    .score-number.poor { color: #ff4444; text-shadow: 0 0 20px rgba(255, 68, 68, 0.5); }
+
+    .score-message {
+      font-size: 1.1rem;
+      color: #ccc;
+      margin-bottom: 20px;
+    }
+
+    .score-buttons { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+
+    .score-btn {
+      padding: 14px 25px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: bold;
+      text-decoration: none;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+    }
+
+    .score-btn:hover { transform: translateY(-3px); }
+
+    .btn-retry { background: linear-gradient(135deg, #ff0066, #ff6600); color: white; }
+    .btn-home { background: transparent; border: 2px solid #00f7ff !important; color: #00f7ff; }
+    .btn-chapter { background: transparent; border: 2px solid #00ff88 !important; color: #00ff88; }
+
+    /* Live Score */
+    .live-score {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      padding: 10px 15px;
+      background: #111133;
+      border-radius: 10px;
+      font-size: 0.9rem;
+    }
+
+    .live-score span { color: #888; }
+    .live-score .correct-count { color: #00ff88; font-weight: bold; }
+    .live-score .wrong-count { color: #ff4444; font-weight: bold; }
+
+    @media (max-width: 600px) {
+      .quiz-header h1 { font-size: 1.4rem; }
+      .question-text { font-size: 1rem; }
+      .score-number { font-size: 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+
+    <!-- Header -->
+    <div class="quiz-header">
+      <h1>🧠 Chapter 1 - Quiz</h1>
+      <p>Test karo apna Python knowledge!</p>
+      <div class="brand">Code With #Shyam</div>
+    </div>
+
+    <!-- Live Score -->
+    <div class="live-score" id="liveScore">
+      <span>✅ Correct: <span class="correct-count" id="correctCount">0</span></span>
+      <span>❌ Wrong: <span class="wrong-count" id="wrongCount">0</span></span>
+    </div>
+
+    <!-- Progress -->
+    <div class="progress-section">
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progressBar"></div>
+      </div>
+      <div class="progress-text" id="progressText">Question 1 of 10</div>
+    </div>
+
+    <!-- Question Area -->
+    <div id="questionArea"></div>
+
+    <!-- Score Section -->
+    <div class="score-section" id="scoreSection">
+      <div class="score-card">
+        <div class="score-emoji" id="scoreEmoji">🎉</div>
+        <div class="score-title">Quiz Complete!</div>
+        <div class="score-number" id="scoreNumber">0/10</div>
+        <div class="score-message" id="scoreMessage">Great job!</div>
+        <div class="score-buttons">
+          <button class="score-btn btn-retry" onclick="restartQuiz()">🔄 Dobara Try Karo</button>
+          <a href="chapter1.html" class="score-btn btn-chapter">📖 Notes Dobara Padho</a>
+          <a href="index.html" class="score-btn btn-home">🏠 Home Page</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "Programming kya hai?",
+        options: [
+          "Computer ko instructions dena taaki wo kaam kare",
+          "Computer mein game khelna",
+          "Keyboard pe typing karna",
+          "Internet chalana"
+        ],
+        correct: 0,
+        explanation: "Programming ka matlab hai computer ko step-by-step instructions dena taaki wo tasks perform kare, problems solve kare!"
+      },
+      {
+        question: "Python ka syntax kaisa hota hai?",
+        options: [
+          "Bahut complicated aur mushkil",
+          "Simple English jaisa — easy to read & write",
+          "Sirf numbers mein likha jata hai",
+          "Hindi mein hota hai"
+        ],
+        correct: 1,
+        explanation: "Python ka syntax bilkul simple English jaisa hota hai, isliye ye sabse beginner-friendly language hai!"
+      },
+      {
+        question: "Prashant ne apna pehla Python program likha. Usne kya type kiya hoga?",
+        options: [
+          "echo 'Hello World'",
+          "System.out.println('Hello')",
+          "print(\"Hello World\")",
+          "console.log('Hello')"
+        ],
+        correct: 2,
+        explanation: "Python mein kuch bhi screen pe dikhane ke liye print() function use hota hai. Prashant ne sahi kiya! 🎉"
+      },
+      {
+        question: "Python file ka extension kya hota hai?",
+        options: [
+          ".java",
+          ".py",
+          ".txt",
+          ".html"
+        ],
+        correct: 1,
+        explanation: "Python ki har file ka naam .py extension ke saath hota hai jaise hello.py, game.py etc."
+      },
+      {
+        question: "Aham ne terminal mein 'pip install flask' type kiya. Pip kya hai?",
+        options: [
+          "Python ka ek game",
+          "Ek programming language",
+          "Python ka package manager — modules install karta hai",
+          "Computer ka ek part"
+        ],
+        correct: 2,
+        explanation: "Pip Python ka package manager hai — jaise Play Store se apps install karte ho, waise Pip se Python modules install hote hain!"
+      },
+      {
+        question: "Module kya hota hai?",
+        options: [
+          "Ek naya computer",
+          "Readymade code ki file jo import karke use kar sakte hain",
+          "Python ka ek game",
+          "Ek tarah ka virus"
+        ],
+        correct: 1,
+        explanation: "Module matlab kisi aur ka likha hua readymade code — jaise Nishant Maggi mein readymade masala daalta hai! 😄"
+      },
+      {
+        question: "Aditya ko ek external module install karna hai. Wo kya karega?",
+        options: [
+          "Google se download karega",
+          "pip install module_name likhega terminal mein",
+          "Apne aap install ho jayega",
+          "Python ko dobara install karega"
+        ],
+        correct: 1,
+        explanation: "External modules pip install command se install hote hain. Aditya ab pro hai! 💪"
+      },
+      {
+        question: "Built-in module ka example kaunsa hai?",
+        options: [
+          "flask",
+          "tensorflow",
+          "os",
+          "django"
+        ],
+        correct: 2,
+        explanation: "os aur random built-in modules hain jo Python ke saath pehle se installed aate hain. Flask aur tensorflow external hain!"
+      },
+      {
+        question: "Babita Mam ko class ke bacchon ke marks jodne hain. Wo Python mein kaise karein?",
+        options: [
+          "Calculator app se",
+          "Terminal mein python type karke REPL mode mein directly calculate karein",
+          "Google pe search karein",
+          "Phone mein calculator kholein"
+        ],
+        correct: 1,
+        explanation: "Python ka REPL mode seedha calculator ki tarah kaam karta hai! Terminal mein python type karo aur calculate karo. Babita Mam smart hain! 👩‍🏫"
+      },
+      {
+        question: "REPL ka full form kya hai?",
+        options: [
+          "Run Execute Print Loop",
+          "Read Evaluate Print Loop",
+          "Read Execute Program Loop",
+          "Run Evaluate Process Loop"
+        ],
+        correct: 1,
+        explanation: "REPL = Read (input padho) → Evaluate (solve karo) → Print (answer dikhao) → Loop (dubara ready). Simple hai!"
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+    let wrongAnswers = 0;
+
+    function loadQuestion() {
+      const q = questions[currentQuestion];
+      const area = document.getElementById('questionArea');
+
+      // Progress
+      const progress = ((currentQuestion) / questions.length) * 100;
+      document.getElementById('progressBar').style.width = progress + '%';
+      document.getElementById('progressText').textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+
+      let optionsHTML = '';
+      q.options.forEach((opt, index) => {
+        optionsHTML += `<button class="option-btn" onclick="checkAnswer(${index})">${opt}</button>`;
+      });
+
+      area.innerHTML = `
+        <div class="question-card">
+          <div class="question-number">Question ${currentQuestion + 1} / ${questions.length}</div>
+          <div class="question-text">${q.question}</div>
+          <div class="options" id="optionsContainer">
+            ${optionsHTML}
+          </div>
+          <div class="explanation" id="explanation">
+            💡 ${q.explanation}
+          </div>
+          <button class="next-btn" id="nextBtn" onclick="nextQuestion()">
+            ${currentQuestion === questions.length - 1 ? '📊 Result Dekho!' : 'Next Question ➡️'}
+          </button>
+        </div>
+      `;
+    }
+
+    function checkAnswer(selected) {
+      const q = questions[currentQuestion];
+      const buttons = document.querySelectorAll('.option-btn');
+      const explanation = document.getElementById('explanation');
+      const nextBtn = document.getElementById('nextBtn');
+
+      // Disable all buttons
+      buttons.forEach((btn, index) => {
+        btn.classList.add('disabled');
+        if (index === q.correct) {
+          btn.classList.add('correct');
+        }
+        if (index === selected && selected !== q.correct) {
+          btn.classList.add('wrong');
+        }
+      });
+
+      if (selected === q.correct) {
+        score++;
+        document.getElementById('correctCount').textContent = score;
+      } else {
+        wrongAnswers++;
+        document.getElementById('wrongCount').textContent = wrongAnswers;
+      }
+
+      explanation.classList.add('show');
+      nextBtn.classList.add('show');
+    }
+
+    function nextQuestion() {
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        loadQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      document.getElementById('questionArea').style.display = 'none';
+      document.getElementById('liveScore').style.display = 'none';
+      document.querySelector('.progress-section').style.display = 'none';
+
+      const scoreSection = document.getElementById('scoreSection');
+      scoreSection.classList.add('show');
+
+      const scoreNumber = document.getElementById('scoreNumber');
+      const scoreEmoji = document.getElementById('scoreEmoji');
+      const scoreMessage = document.getElementById('scoreMessage');
+
+      scoreNumber.textContent = `${score} / ${questions.length}`;
+
+      if (score >= 8) {
+        scoreNumber.className = 'score-number excellent';
+        scoreEmoji.textContent = '🏆';
+        scoreMessage.textContent = 'Kamaal kar diya bhai! Tu to Python ka champion hai! 🔥';
+      } else if (score >= 5) {
+        scoreNumber.className = 'score-number good';
+        scoreEmoji.textContent = '👍';
+        scoreMessage.textContent = 'Achha hai yaar! Thoda aur practice kar, next time full marks! 💪';
+      } else {
+        scoreNumber.className = 'score-number poor';
+        scoreEmoji.textContent = '📖';
+        scoreMessage.textContent = 'Koi nahi bhai! Notes dobara padh aur try kar. Tu kar lega! 🙌';
+      }
+    }
+
+    function restartQuiz() {
+      currentQuestion = 0;
+      score = 0;
+      wrongAnswers = 0;
+
+      document.getElementById('correctCount').textContent = '0';
+      document.getElementById('wrongCount').textContent = '0';
+
+      document.getElementById('questionArea').style.display = 'block';
+      document.getElementById('liveScore').style.display = 'flex';
+      document.querySelector('.progress-section').style.display = 'block';
+      document.getElementById('scoreSection').classList.remove('show');
+
+      loadQuestion();
+    }
+
+    // Start
+    loadQuestion();
+  </script>
+</body>
+</html>
