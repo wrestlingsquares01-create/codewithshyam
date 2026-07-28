@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Help & Doubts | Code With #Shyam</title>
+  <title>Chat with Shyam Sir | Code With #Shyam</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -15,97 +15,98 @@
       padding: 20px;
     }
 
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-    }
+    .container { max-width: 700px; margin: 0 auto; }
 
-    /* Header */
     .header {
       text-align: center;
-      padding: 30px 20px;
-      margin-bottom: 30px;
+      padding: 25px 20px;
+      margin-bottom: 20px;
       background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
       border-radius: 15px;
       border: 1px solid #00f7ff33;
     }
 
     .header h1 {
-      font-size: 2rem;
+      font-size: 1.8rem;
       color: #00f7ff;
       text-shadow: 0 0 10px rgba(0, 247, 255, 0.5);
       margin-bottom: 5px;
     }
 
-    .header p {
-      color: #aaa;
-      font-size: 1rem;
-    }
+    .header p { color: #aaa; font-size: 0.95rem; }
+    .header .brand { color: #fff; font-weight: bold; margin-top: 5px; }
 
-    .header .brand {
-      color: #fff;
-      font-weight: bold;
-      margin-top: 8px;
-    }
-
-    /* Tabs */
-    .tabs {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
-
-    .tab {
-      flex: 1;
-      min-width: 130px;
-      padding: 12px;
+    /* Name Entry Screen */
+    .name-screen {
       background: #111133;
-      border: 2px solid #333;
-      border-radius: 10px;
+      border-radius: 15px;
+      padding: 40px 30px;
+      text-align: center;
+      border: 1px solid #00f7ff33;
+    }
+
+    .name-screen h2 {
+      color: #00f7ff;
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    .input-group label {
+      display: block;
       color: #aaa;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px 15px;
+      background: #0a0a1a;
+      border: 1px solid #333;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+
+    .input-group input:focus { border-color: #00f7ff; }
+
+    .start-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #00f7ff, #0088ff);
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: bold;
       cursor: pointer;
       transition: all 0.3s ease;
-      text-align: center;
-      font-weight: bold;
-      font-size: 0.95rem;
+      margin-top: 10px;
     }
 
-    .tab:hover {
-      border-color: #00f7ff;
-      color: #fff;
+    .start-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 20px rgba(0, 247, 255, 0.5);
     }
 
-    .tab.active {
-      background: linear-gradient(135deg, #00f7ff, #0088ff);
-      border-color: #00f7ff;
-      color: #000;
-    }
-
-    /* Tab Content */
-    .tab-content {
-      display: none;
-      animation: fadeIn 0.4s ease;
-    }
-
-    .tab-content.active {
-      display: block;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ==================== */
-    /* CHAT SECTION         */
-    /* ==================== */
+    /* Chat Interface */
     .chat-container {
       background: #111133;
       border-radius: 15px;
       overflow: hidden;
       border: 1px solid #00f7ff33;
+      display: none;
     }
+
+    .chat-container.active { display: block; }
 
     .chat-header {
       background: linear-gradient(135deg, #00f7ff, #0088ff);
@@ -129,15 +130,8 @@
       color: #00f7ff;
     }
 
-    .chat-header-info h3 {
-      font-size: 1.1rem;
-      margin-bottom: 2px;
-    }
-
-    .chat-header-info span {
-      font-size: 0.8rem;
-      opacity: 0.8;
-    }
+    .chat-header-info h3 { font-size: 1.1rem; margin-bottom: 2px; }
+    .chat-header-info span { font-size: 0.8rem; opacity: 0.8; }
 
     .status-dot {
       width: 8px;
@@ -161,10 +155,7 @@
       background: #0a0a1a;
     }
 
-    .chat-body::-webkit-scrollbar {
-      width: 6px;
-    }
-
+    .chat-body::-webkit-scrollbar { width: 6px; }
     .chat-body::-webkit-scrollbar-thumb {
       background: #00f7ff44;
       border-radius: 10px;
@@ -181,13 +172,8 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .message.received {
-      justify-content: flex-start;
-    }
-
-    .message.sent {
-      justify-content: flex-end;
-    }
+    .message.sent { justify-content: flex-end; }
+    .message.received { justify-content: flex-start; }
 
     .message-bubble {
       max-width: 75%;
@@ -198,16 +184,16 @@
       word-wrap: break-word;
     }
 
-    .message.received .message-bubble {
-      background: #1a1a3e;
-      color: #fff;
-      border-bottom-left-radius: 4px;
-    }
-
     .message.sent .message-bubble {
       background: linear-gradient(135deg, #00f7ff, #0088ff);
       color: #000;
       border-bottom-right-radius: 4px;
+    }
+
+    .message.received .message-bubble {
+      background: #1a1a3e;
+      color: #fff;
+      border-bottom-left-radius: 4px;
     }
 
     .message-time {
@@ -233,12 +219,9 @@
       color: #fff;
       font-size: 0.95rem;
       outline: none;
-      transition: border-color 0.3s ease;
     }
 
-    .chat-input:focus {
-      border-color: #00f7ff;
-    }
+    .chat-input:focus { border-color: #00f7ff; }
 
     .send-btn {
       width: 45px;
@@ -250,9 +233,6 @@
       font-size: 1.2rem;
       cursor: pointer;
       transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
     .send-btn:hover {
@@ -260,127 +240,6 @@
       box-shadow: 0 0 15px rgba(0, 247, 255, 0.5);
     }
 
-    /* Quick Reply Buttons */
-    .quick-replies {
-      padding: 10px 15px;
-      background: #111133;
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      border-top: 1px solid #333;
-    }
-
-    .quick-reply-btn {
-      padding: 6px 12px;
-      background: transparent;
-      border: 1px solid #00f7ff;
-      color: #00f7ff;
-      border-radius: 15px;
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .quick-reply-btn:hover {
-      background: #00f7ff;
-      color: #000;
-    }
-
-    /* ==================== */
-    /* FAQ SECTION          */
-    /* ==================== */
-    .faq-item {
-      background: #111133;
-      border-radius: 10px;
-      margin-bottom: 12px;
-      overflow: hidden;
-      border-left: 3px solid #00f7ff;
-    }
-
-    .faq-question {
-      padding: 15px 20px;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: background 0.3s ease;
-    }
-
-    .faq-question:hover {
-      background: #1a1a3e;
-    }
-
-    .faq-question h3 {
-      color: #00f7ff;
-      font-size: 1rem;
-    }
-
-    .faq-toggle {
-      color: #00f7ff;
-      font-size: 1.5rem;
-      transition: transform 0.3s ease;
-    }
-
-    .faq-item.open .faq-toggle {
-      transform: rotate(45deg);
-    }
-
-    .faq-answer {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease, padding 0.3s ease;
-      padding: 0 20px;
-      color: #ccc;
-      line-height: 1.6;
-    }
-
-    .faq-item.open .faq-answer {
-      max-height: 300px;
-      padding: 15px 20px;
-      border-top: 1px solid #333;
-    }
-
-    /* ==================== */
-    /* CONTACT SECTION      */
-    /* ==================== */
-    .contact-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-    }
-
-    .contact-card {
-      background: #111133;
-      border-radius: 12px;
-      padding: 25px;
-      text-align: center;
-      border: 2px solid #333;
-      transition: all 0.3s ease;
-      cursor: pointer;
-    }
-
-    .contact-card:hover {
-      border-color: #00f7ff;
-      transform: translateY(-5px);
-      box-shadow: 0 5px 20px rgba(0, 247, 255, 0.2);
-    }
-
-    .contact-icon {
-      font-size: 3rem;
-      margin-bottom: 10px;
-    }
-
-    .contact-card h3 {
-      color: #00f7ff;
-      margin-bottom: 5px;
-    }
-
-    .contact-card p {
-      color: #aaa;
-      font-size: 0.9rem;
-    }
-
-    /* Back Button */
     .back-btn {
       display: inline-block;
       padding: 10px 25px;
@@ -391,228 +250,59 @@
       text-decoration: none;
       font-weight: bold;
       transition: all 0.3s ease;
-      margin-top: 30px;
+      margin-top: 20px;
     }
 
-    .back-btn:hover {
-      background: #00f7ff;
-      color: #000;
-    }
+    .back-btn:hover { background: #00f7ff; color: #000; }
 
-    /* Footer */
     .footer {
       text-align: center;
       padding: 20px;
       color: #555;
       font-size: 0.85rem;
-      margin-top: 30px;
     }
 
-    .footer span {
-      color: #00f7ff;
-      font-weight: bold;
-    }
-
-    @media (max-width: 600px) {
-      .header h1 { font-size: 1.5rem; }
-      .contact-grid { grid-template-columns: 1fr; }
-      .tabs { flex-direction: column; }
-      .chat-body { height: 350px; }
-    }
+    .footer span { color: #00f7ff; font-weight: bold; }
   </style>
 </head>
 <body>
   <div class="container">
 
-    <!-- Header -->
     <div class="header">
-      <h1>💬 Help & Doubts Center</h1>
-      <p>Koi bhi problem ho, yahan pucho!</p>
+      <h1>💬 Chat with Shyam Sir</h1>
+      <p>Koi bhi doubt ho, direct puch!</p>
       <div class="brand">Code With #Shyam</div>
     </div>
 
-    <!-- Tabs -->
-    <div class="tabs">
-      <div class="tab active" onclick="switchTab('chat')">💬 Live Chat</div>
-      <div class="tab" onclick="switchTab('faq')">❓ Common Problems</div>
-      <div class="tab" onclick="switchTab('contact')">📞 Contact</div>
+    <!-- Name Entry Screen -->
+    <div class="name-screen" id="nameScreen">
+      <h2>👋 Chat Start Karo!</h2>
+      <div class="input-group">
+        <label>Tera Naam:</label>
+        <input type="text" id="userName" placeholder="Jaise: Prashant" />
+      </div>
+      <div class="input-group">
+        <label>Class / Roll No:</label>
+        <input type="text" id="userClass" placeholder="Jaise: Class 10" />
+      </div>
+      <button class="start-btn" onclick="startChat()">Chat Start Karo 💬</button>
     </div>
 
-    <!-- CHAT TAB -->
-    <div class="tab-content active" id="chat">
-      <div class="chat-container">
-        <div class="chat-header">
-          <div class="chat-avatar">S</div>
-          <div class="chat-header-info">
-            <h3>Shyam Sir</h3>
-            <span><span class="status-dot"></span>Online — Ready to help!</span>
-          </div>
-        </div>
-
-        <div class="chat-body" id="chatBody">
-          <div class="message received">
-            <div>
-              <div class="message-bubble">
-                👋 Namaste! Main Shyam hu. Koi bhi doubt ho Python ke baare mein, yahan puch sakte ho!
-              </div>
-              <div class="message-time">Just now</div>
-            </div>
-          </div>
-          <div class="message received">
-            <div>
-              <div class="message-bubble">
-                Niche kuch quick options hain, ya khud type kar sakte ho 👇
-              </div>
-              <div class="message-time">Just now</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="quick-replies">
-          <button class="quick-reply-btn" onclick="quickReply('Python install kaise karu?')">Python install kaise karu?</button>
-          <button class="quick-reply-btn" onclick="quickReply('print function kya hai?')">print function kya hai?</button>
-          <button class="quick-reply-btn" onclick="quickReply('Module aur Pip mein kya difference hai?')">Module vs Pip?</button>
-          <button class="quick-reply-btn" onclick="quickReply('REPL mode kya hai?')">REPL mode kya hai?</button>
-          <button class="quick-reply-btn" onclick="quickReply('Mera code chal nahi raha')">Code chal nahi raha</button>
-        </div>
-
-        <div class="chat-input-area">
-          <input type="text" class="chat-input" id="chatInput" placeholder="Apna doubt yahan likho..." onkeypress="if(event.key==='Enter') sendMessage()" />
-          <button class="send-btn" onclick="sendMessage()">➤</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- FAQ TAB -->
-    <div class="tab-content" id="faq">
-      <div class="faq-item" onclick="toggleFAQ(this)">
-        <div class="faq-question">
-          <h3>❓ Python install karte waqt "python not recognized" error aa raha hai?</h3>
-          <span class="faq-toggle">+</span>
-        </div>
-        <div class="faq-answer">
-          Install karte waqt <strong>"Add Python to PATH"</strong> wale checkbox pe tick nahi kiya hoga. 
-          Uninstall karke dobara install kar aur is baar checkbox tick zaroor karna! ✅
+    <!-- Chat Interface -->
+    <div class="chat-container" id="chatContainer">
+      <div class="chat-header">
+        <div class="chat-avatar">S</div>
+        <div class="chat-header-info">
+          <h3>Shyam Sir</h3>
+          <span><span class="status-dot"></span>Online</span>
         </div>
       </div>
 
-      <div class="faq-item" onclick="toggleFAQ(this)">
-        <div class="faq-question">
-          <h3>❓ pip install command kaam nahi kar raha?</h3>
-          <span class="faq-toggle">+</span>
-        </div>
-        <div class="faq-answer">
-          Terminal mein ye try kar:<br>
-          <code style="background:#000;padding:5px 10px;border-radius:5px;color:#00ff88;">python -m pip install --upgrade pip</code><br>
-          Phir apna module install karna try kar!
-        </div>
-      </div>
+      <div class="chat-body" id="chatBody"></div>
 
-      <div class="faq-item" onclick="toggleFAQ(this)">
-        <div class="faq-question">
-          <h3>❓ print statement mein error aa raha hai?</h3>
-          <span class="faq-toggle">+</span>
-        </div>
-        <div class="faq-answer">
-          Check kar:<br>
-          ✅ Brackets sahi hain: <code>print("Hello")</code><br>
-          ✅ Quotes sahi hain (" ya ')<br>
-          ✅ Spelling: <code>print</code> hai, <code>prit</code> nahi<br>
-          ✅ Small letters mein hai
-        </div>
-      </div>
-
-      <div class="faq-item" onclick="toggleFAQ(this)">
-        <div class="faq-question">
-          <h3>❓ Module import karne pe error milta hai?</h3>
-          <span class="faq-toggle">+</span>
-        </div>
-        <div class="faq-answer">
-          External module hai to pehle install kar:<br>
-          <code style="background:#000;padding:5px 10px;border-radius:5px;color:#00ff88;">pip install module_name</code><br>
-          Phir import kar. Built-in modules (os, random) directly import ho jate hain!
-        </div>
-      </div>
-
-      <div class="faq-item" onclick="toggleFAQ(this)">
-        <div class="faq-question">
-          <h3>❓ Python file kaise run karu?</h3>
-          <span class="faq-toggle">+</span>
-        </div>
-        <div class="faq-answer">
-          1. File save kar <code>.py</code> extension ke saath (jaise hello.py)<br>
-          2. Terminal khol<br>
-          3. Us folder mein ja jahan file hai<br>
-          4. Type kar: <code>python filename.py</code><br>
-          5. Enter dabao — output aa jayega! 🎉
-        </div>
-      </div>
-
-      <div class="faq-item" onclick="toggleFAQ(this)">
-        <div class="faq-question">
-          <h3>❓ REPL mode se bahar kaise aayein?</h3>
-          <span class="faq-toggle">+</span>
-        </div>
-        <div class="faq-answer">
-          3 tarike:<br>
-          1. Type kar: <code>exit()</code><br>
-          2. Ya: <code>quit()</code><br>
-          3. Ya: <code>Ctrl + Z</code> phir Enter (Windows)<br>
-          4. Ya: <code>Ctrl + D</code> (Mac/Linux)
-        </div>
-      </div>
-
-      <div class="faq-item" onclick="toggleFAQ(this)">
-        <div class="faq-question">
-          <h3>❓ Quiz mein galat answer aaya, kya karu?</h3>
-          <span class="faq-toggle">+</span>
-        </div>
-        <div class="faq-answer">
-          Tension mat le! 😊 <br>
-          1. Notes dobara padh<br>
-          2. Explanation dhyan se dekh (galat answer ke baad aati hai)<br>
-          3. "Retry" button dabake dobara try kar<br>
-          4. Practice se sab ho jayega! 💪
-        </div>
-      </div>
-    </div>
-
-    <!-- CONTACT TAB -->
-    <div class="tab-content" id="contact">
-      <div class="contact-grid">
-        <div class="contact-card" onclick="showContactInfo('class')">
-          <div class="contact-icon">🎓</div>
-          <h3>Class Mein Milo</h3>
-          <p>Roz class ke baad<br>free time mein pucho</p>
-        </div>
-
-        <div class="contact-card" onclick="showContactInfo('friend')">
-          <div class="contact-icon">👥</div>
-          <h3>Dost Se Puchо</h3>
-          <p>Prashant, Aham, Aditya,<br>Nishant se help lo</p>
-        </div>
-
-        <div class="contact-card" onclick="showContactInfo('teacher')">
-          <div class="contact-icon">👩‍🏫</div>
-          <h3>Babita Mam</h3>
-          <p>Serious doubt ho to<br>Mam se puchо</p>
-        </div>
-
-        <div class="contact-card" onclick="showContactInfo('practice')">
-          <div class="contact-icon">💻</div>
-          <h3>Khud Try Kar</h3>
-          <p>Practice karo, Google karo<br>YouTube dekh sakte ho</p>
-        </div>
-      </div>
-
-      <div style="background:#111133; margin-top:20px; padding:20px; border-radius:12px; border-left:4px solid #ffa500;">
-        <h3 style="color:#ffa500; margin-bottom:10px;">💡 Golden Rule:</h3>
-        <p style="color:#ccc;">
-          "Coding mein sabse important cheez hai <strong style="color:#00f7ff;">practice</strong>. 
-          Har din 30 minute code likho, ek mahine mein tum expert ban jaoge!" 
-          <br><br>
-          — Shyam Sir 😎
-        </p>
+      <div class="chat-input-area">
+        <input type="text" class="chat-input" id="chatInput" placeholder="Message likho..." onkeypress="if(event.key==='Enter') sendMessage()" />
+        <button class="send-btn" onclick="sendMessage()">➤</button>
       </div>
     </div>
 
@@ -626,98 +316,139 @@
 
   </div>
 
-  <script>
-    // Tab Switching
-    function switchTab(tabName) {
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  <!-- Firebase Scripts -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+    import { getDatabase, ref, push, onValue, set } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
 
-      event.target.classList.add('active');
-      document.getElementById(tabName).classList.add('active');
-    }
-
-    // FAQ Toggle
-    function toggleFAQ(item) {
-      item.classList.toggle('open');
-    }
-
-    // Chat System
-    const chatBody = document.getElementById('chatBody');
-    const chatInput = document.getElementById('chatInput');
-
-    // Auto Responses
-    const autoReplies = {
-      'python install': "Python install karne ke liye:\n1. python.org pe jao\n2. Latest version download karo\n3. Install karte waqt 'Add Python to PATH' pe TICK karna zaroor!\n4. Terminal mein 'python --version' type karke check kar 😎",
-      'print': "print() ek function hai jo screen pe kuch dikhata hai.\nExample: print('Hello World')\n\nBrackets aur quotes zaroori hain! ✅",
-      'module': "Module = readymade code file\nPip = tool jo modules install karta hai\n\nSimple: Module 'kya' hai, Pip 'kaise' install kare 💡",
-      'pip': "Pip Python ka package manager hai.\nUse kar: pip install <module_name>\nExample: pip install flask 🚀",
-      'repl': "REPL = Read Evaluate Print Loop\nTerminal mein 'python' type kar\nAb tu directly Python commands chala sakta hai!\nCalculator ki tarah use kar 🧮",
-      'error': "Error aana normal hai! 😊\n1. Error message dhyan se padh\n2. Line number check kar\n3. Spelling, brackets, quotes check kar\n4. Google kar error message\n5. Mujhe puch! 💪",
-      'code chal nahi': "Ye check kar:\n1. File .py extension se save hai?\n2. Terminal sahi folder mein hai?\n3. Command sahi hai: python filename.py\n4. Spelling errors to nahi?\n\nAgar phir bhi problem ho to detail mein bata! 🤔",
-      'help': "Main yahan hu help karne ke liye! 😊\nApna doubt clearly likh, main jawab dunga.\nYa upar 'Common Problems' tab dekh — shayad tera answer wahi mil jaye! ✅",
-      'hi': "Hey! 👋 Kaise ho? Kya doubt hai Python mein?",
-      'hello': "Hello! 😊 Batao, kya help chahiye?",
-      'thanks': "Welcome bhai! 😎 Aur koi doubt ho to puchna!",
-      'thank you': "Most welcome! 🙌 Padhte raho, progress karte raho!"
+    const firebaseConfig = {
+      apiKey: "AIzaSyC8QH1r20GnrSpY9jfxaZKbxSX7OOwA5AY",
+      authDomain: "codewithshyam-86c96.firebaseapp.com",
+      databaseURL: "https://codewithshyam-86c96-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "codewithshyam-86c96",
+      storageBucket: "codewithshyam-86c96.firebasestorage.app",
+      messagingSenderId: "275205226924",
+      appId: "1:275205226924:web:81d1961f413fa6ac4e3a09"
     };
 
-    function sendMessage() {
-      const message = chatInput.value.trim();
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    let userName = '';
+    let userClass = '';
+    let userId = '';
+
+    window.startChat = function() {
+      const name = document.getElementById('userName').value.trim();
+      const cls = document.getElementById('userClass').value.trim();
+
+      if (!name || !cls) {
+        alert('Please naam aur class dono bhar!');
+        return;
+      }
+
+      userName = name;
+      userClass = cls;
+      userId = name.toLowerCase().replace(/\s+/g, '_') + '_' + Date.now();
+
+      // Save user info
+      localStorage.setItem('chatUserId', userId);
+      localStorage.setItem('chatUserName', userName);
+      localStorage.setItem('chatUserClass', userClass);
+
+      document.getElementById('nameScreen').style.display = 'none';
+      document.getElementById('chatContainer').classList.add('active');
+
+      // Welcome message
+      addMessage('👋 Hello ' + userName + '! Main Shyam hu. Bata kya doubt hai?', 'received');
+
+      // Load previous messages
+      loadMessages();
+    };
+
+    // Auto-login if returning user
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedId = localStorage.getItem('chatUserId');
+      const savedName = localStorage.getItem('chatUserName');
+      const savedClass = localStorage.getItem('chatUserClass');
+
+      if (savedId && savedName) {
+        userId = savedId;
+        userName = savedName;
+        userClass = savedClass;
+
+        document.getElementById('nameScreen').style.display = 'none';
+        document.getElementById('chatContainer').classList.add('active');
+
+        loadMessages();
+      }
+    });
+
+    window.sendMessage = function() {
+      const input = document.getElementById('chatInput');
+      const message = input.value.trim();
       if (!message) return;
 
-      // Add user message
-      addMessage(message, 'sent');
-      chatInput.value = '';
+      const messagesRef = ref(db, 'chats/' + userId + '/messages');
+      push(messagesRef, {
+        text: message,
+        sender: 'student',
+        senderName: userName,
+        senderClass: userClass,
+        timestamp: Date.now()
+      });
 
-      // Auto reply after 800ms
-      setTimeout(() => {
-        const reply = getAutoReply(message.toLowerCase());
-        addMessage(reply, 'received');
-      }, 800);
+      // Save user info to database
+      set(ref(db, 'chats/' + userId + '/info'), {
+        name: userName,
+        class: userClass,
+        lastActive: Date.now()
+      });
+
+      input.value = '';
+    };
+
+    function loadMessages() {
+      const messagesRef = ref(db, 'chats/' + userId + '/messages');
+      onValue(messagesRef, (snapshot) => {
+        const chatBody = document.getElementById('chatBody');
+        chatBody.innerHTML = '';
+
+        // Welcome message
+        addMessage('👋 Hello ' + userName + '! Main Shyam hu. Bata kya doubt hai?', 'received');
+
+        const data = snapshot.val();
+        if (data) {
+          Object.values(data).sort((a, b) => a.timestamp - b.timestamp).forEach(msg => {
+            addMessage(msg.text, msg.sender === 'student' ? 'sent' : 'received', msg.timestamp);
+          });
+        }
+      });
     }
 
-    function quickReply(text) {
-      chatInput.value = text;
-      sendMessage();
-    }
-
-    function addMessage(text, type) {
+    function addMessage(text, type, timestamp) {
+      const chatBody = document.getElementById('chatBody');
       const messageDiv = document.createElement('div');
-      messageDiv.className = `message ${type}`;
+      messageDiv.className = 'message ' + type;
 
-      const now = new Date();
-      const time = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+      let time = '';
+      if (timestamp) {
+        const d = new Date(timestamp);
+        time = d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
+      } else {
+        const now = new Date();
+        time = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+      }
 
       messageDiv.innerHTML = `
         <div>
-          <div class="message-bubble">${text.replace(/\n/g, '<br>')}</div>
+          <div class="message-bubble">${text}</div>
           <div class="message-time">${time}</div>
         </div>
       `;
 
       chatBody.appendChild(messageDiv);
       chatBody.scrollTop = chatBody.scrollHeight;
-    }
-
-    function getAutoReply(message) {
-      // Check for keywords
-      for (const key in autoReplies) {
-        if (message.includes(key)) {
-          return autoReplies[key];
-        }
-      }
-      // Default reply
-      return "Bhai teri baat samajh gaya! 🤔\nZyada detail mein bata — kis chapter/topic mein problem hai?\n\nYa 'Common Problems' tab check kar — shayad wahi answer mil jaye! ✅\n\nAgar direct baat karni ho, class mein mil ya Babita Mam se puch! 👍";
-    }
-
-    function showContactInfo(type) {
-      const messages = {
-        'class': "🎓 Class ke baad free time mein aake pucho! Main hamesha available hu. 😊",
-        'friend': "👥 Prashant, Aham, Aditya ya Nishant — koi bhi help karega!\nSaath mein padhoge to jaldi samajh aayega! 💪",
-        'teacher': "👩‍🏫 Babita Mam ki class time mein ya break mein puch sakte ho.\nWo experienced hain, sab batayengi! 📚",
-        'practice': "💻 Best way to learn:\n1. Roz 30 min code likho\n2. YouTube: 'CodeWithHarry' dekho\n3. Google karo doubts\n4. Chhote projects banao! 🚀"
-      };
-      alert(messages[type]);
     }
   </script>
 </body>
