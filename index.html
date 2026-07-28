@@ -4,11 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Code With #Shyam | Python Portal</title>
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
-  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -38,6 +36,7 @@
     .intro {
       text-align: center;
       transition: opacity 0.5s ease, transform 0.5s ease;
+      padding: 20px;
     }
 
     .intro.hidden {
@@ -47,90 +46,121 @@
       position: absolute;
     }
 
+    /* ============================ */
+    /* PREMIUM TITLE STYLE          */
+    /* ============================ */
     .title {
-  font-family: 'Outfit', sans-serif;
-  font-size: 4.5rem;
-  font-weight: 800;
-  letter-spacing: -2px;
-  text-transform: none;
-  background: linear-gradient(135deg, 
-    #ffffff 0%, 
-    #00f7ff 25%, 
-    #ff00e6 50%, 
-    #00f7ff 75%, 
-    #ffffff 100%);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  animation: shimmer 3s linear infinite, floatText 3s ease-in-out infinite;
-  margin-bottom: 20px;
-  position: relative;
-  filter: drop-shadow(0 0 30px rgba(0, 247, 255, 0.4));
-  line-height: 1.1;
-}
+      font-family: 'Outfit', sans-serif;
+      font-size: 4.5rem;
+      font-weight: 800;
+      letter-spacing: -2px;
+      text-transform: none;
+      background: linear-gradient(135deg, 
+        #ffffff 0%, 
+        #00f7ff 25%, 
+        #ff00e6 50%, 
+        #00f7ff 75%, 
+        #ffffff 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      animation: shimmer 3s linear infinite, floatText 3s ease-in-out infinite;
+      margin-bottom: 20px;
+      position: relative;
+      filter: drop-shadow(0 0 30px rgba(0, 247, 255, 0.4));
+      line-height: 1.1;
+    }
 
-.title::before {
-  content: 'Code With';
-  display: block;
-  font-size: 1.5rem;
-  font-weight: 300;
-  letter-spacing: 8px;
-  text-transform: uppercase;
-  background: linear-gradient(90deg, transparent, #00f7ff, transparent);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shimmer 2s linear infinite;
-  margin-bottom: 5px;
-  filter: drop-shadow(0 0 10px rgba(0, 247, 255, 0.3));
-}
+    .title::before {
+      content: 'Code With';
+      display: block;
+      font-size: 1.5rem;
+      font-weight: 300;
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, transparent, #00f7ff, transparent);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 2s linear infinite;
+      margin-bottom: 5px;
+      filter: drop-shadow(0 0 10px rgba(0, 247, 255, 0.3));
+    }
 
-.title::after {
-  content: '';
-  position: absolute;
-  bottom: -15px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 150px;
-  height: 3px;
-  background: linear-gradient(90deg, transparent, #00f7ff, #ff00e6, #00f7ff, transparent);
-  background-size: 200% auto;
-  animation: shimmer 2s linear infinite;
-  border-radius: 2px;
-  filter: blur(1px);
-}
+    .title::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 150px;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #00f7ff, #ff00e6, #00f7ff, transparent);
+      background-size: 200% auto;
+      animation: shimmer 2s linear infinite;
+      border-radius: 2px;
+      filter: blur(1px);
+    }
 
-@keyframes shimmer {
-  0% { background-position: 0% center; }
-  100% { background-position: 200% center; }
-}
+    @keyframes shimmer {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
 
-@keyframes floatText {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
+    @keyframes floatText {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
 
-@keyframes pulse {
-  from { transform: scale(1); }
-  to { transform: scale(1.03); }
-}
-
+    /* ============================ */
+    /* PREMIUM SUBTITLE STYLE       */
+    /* ============================ */
     .subtitle {
-      font-size: 1.3rem;
-      color: #dcdcdc;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      color: #888;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      font-weight: 400;
+      margin-top: 30px;
+      position: relative;
+      display: inline-block;
+      padding: 8px 20px;
+      border: 1px solid #333;
+      border-radius: 30px;
+      background: rgba(0, 247, 255, 0.05);
+      backdrop-filter: blur(10px);
+      animation: subtitleGlow 2s ease-in-out infinite;
+    }
+
+    .subtitle::before {
+      content: '●';
+      color: #00ff88;
+      margin-right: 8px;
       animation: blink 1s infinite;
     }
 
-    @keyframes pulse {
-      from { transform: scale(1); text-shadow: 0 0 10px #00f7ff; }
-      to { transform: scale(1.08); text-shadow: 0 0 25px #00f7ff, 0 0 40px #00f7ff; }
+    @keyframes subtitleGlow {
+      0%, 100% { 
+        border-color: #333;
+        box-shadow: 0 0 10px rgba(0, 247, 255, 0.1);
+      }
+      50% { 
+        border-color: #00f7ff44;
+        box-shadow: 0 0 20px rgba(0, 247, 255, 0.3);
+      }
     }
 
-    @keyframes blink { 50% { opacity: 0.5; } }
+    @keyframes blink { 
+      50% { opacity: 0.3; } 
+    }
 
+    /* ============================ */
+    /* MENU SCREEN                  */
+    /* ============================ */
     .menu {
       text-align: center;
       opacity: 0;
@@ -149,10 +179,15 @@
     }
 
     .menu-title {
-      font-size: 2.2rem;
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 700;
       margin-bottom: 30px;
-      color: #00f7ff;
-      text-shadow: 0 0 10px rgba(0, 247, 255, 0.5);
+      background: linear-gradient(135deg, #00f7ff, #ff00e6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 20px rgba(0, 247, 255, 0.3));
     }
 
     .buttons {
@@ -164,11 +199,12 @@
     }
 
     .btn {
+      font-family: 'Space Grotesk', sans-serif;
       padding: 18px 30px;
-      font-size: 1.2rem;
-      font-weight: bold;
+      font-size: 1.1rem;
+      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 1.5px;
+      letter-spacing: 2px;
       color: white;
       background: rgba(0, 0, 0, 0.4);
       border: 2px solid #00f7ff;
@@ -180,15 +216,16 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
+      backdrop-filter: blur(10px);
     }
 
     .btn:hover {
       transform: translateY(-5px);
-      box-shadow: 0 0 20px rgba(0, 247, 255, 0.4);
+      box-shadow: 0 0 30px rgba(0, 247, 255, 0.5);
       background: rgba(0, 247, 255, 0.1);
     }
 
-    /* Modi on Index - floating */
+    /* Modi on Index */
     .modi-index {
       position: fixed;
       bottom: 20px;
@@ -240,10 +277,12 @@
     }
 
     @media (max-width: 600px) {
-      .title { font-size: 2.2rem; }
-      .menu-title { font-size: 1.5rem; }
-      .btn { padding: 15px 20px; font-size: 1rem; }
+      .title { font-size: 2.8rem; }
+      .title::before { font-size: 1rem; letter-spacing: 5px; }
+      .menu-title { font-size: 1.8rem; }
+      .btn { padding: 15px 20px; font-size: 0.9rem; }
       .buttons { width: 90%; }
+      .subtitle { font-size: 0.8rem; letter-spacing: 2px; }
       .modi-index { width: 120px; bottom: 10px; right: 10px; }
       .speech-index { bottom: 140px; right: 5px; font-size: 0.75rem; max-width: 140px; }
     }
@@ -253,12 +292,12 @@
 
   <div class="intro" id="intro">
     <div class="title">#Shyam</div>
-    <div class="subtitle">Initializing Python Class...</div>
+    <div class="subtitle">Initializing Python Class</div>
   </div>
 
   <div class="menu" id="menu">
     <div class="menu-title">Select Chapter</div>
-            <div class="buttons">
+    <div class="buttons">
       <a href="chapter1.html" class="btn">
         <span>📖</span> Chapter 1 - Python Basics
       </a>
@@ -282,7 +321,7 @@
         document.getElementById('modiIndex').classList.add('show');
         document.getElementById('speechIndex').classList.add('show');
       }, 500);
-    }, 3000);
+    }, 3500);
 
     const indexDialogues = [
       "Mitron, Python Seekho! 🇮🇳",
