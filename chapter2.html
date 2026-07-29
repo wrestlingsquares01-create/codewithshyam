@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 2 | Code With #Shyam</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Caveat:wght@700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0a0a1a;
+      color: #e0e0e0;
+      line-height: 1.8;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    .main-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+      position: relative;
+      z-index: 5;
+    }
+
+    .character-right {
+      position: sticky;
+      top: 20px;
+      height: calc(100vh - 40px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+    }
+
+    .modi-container {
+      position: relative;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: floatChar 4s ease-in-out infinite;
+    }
+
+    @keyframes floatChar {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(2deg); }
+    }
+
+    .aura {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 300px;
+      height: 300px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      filter: blur(40px);
+      opacity: 0.6;
+      animation: pulseAura 2s ease-in-out infinite;
+      z-index: -1;
+      background: radial-gradient(circle, #ff8800 0%, transparent 70%);
+    }
+
+    @keyframes pulseAura {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+      50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
+    }
+
+    .power-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 250px;
+      height: 250px;
+      transform: translate(-50%, -50%);
+      border: 3px dashed #ff8800;
+      border-radius: 50%;
+      animation: rotateRing 8s linear infinite;
+      z-index: -1;
+    }
+
+    @keyframes rotateRing {
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    .power-ring-2 {
+      width: 200px;
+      height: 200px;
+      border-style: dotted;
+      animation-duration: 6s;
+      animation-direction: reverse;
+    }
+
+    .character-img {
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      border: 4px solid #ff8800;
+      box-shadow: 0 0 30px rgba(255, 136, 0, 0.6);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      background: rgba(0, 0, 0, 0.3);
+      object-fit: cover;
+    }
+
+    .character-img:hover {
+      transform: scale(1.1) rotate(-5deg);
+      filter: brightness(1.2);
+    }
+
+    .sparkle {
+      position: absolute;
+      color: #ffff00;
+      font-size: 1.5rem;
+      animation: sparkleAnim 2s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes sparkleAnim {
+      0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+      50% { opacity: 1; transform: scale(1) rotate(180deg); }
+    }
+
+    .name-tag {
+      margin-top: 15px;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      background: linear-gradient(135deg, #ff8800, #cc4400);
+      border: 2px solid #ffaa00;
+    }
+
+    .speech {
+      margin-top: 15px;
+      padding: 12px 15px;
+      border-radius: 15px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      text-align: center;
+      max-width: 240px;
+      position: relative;
+      animation: fadeInSpeech 0.5s ease;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #ff8800, #ee6600);
+      color: white;
+      box-shadow: 0 0 20px rgba(255, 136, 0, 0.4);
+      transition: opacity 0.3s ease;
+    }
+
+    .speech::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 10px solid #ff8800;
+    }
+
+    @keyframes fadeInSpeech {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .speed-lines {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: -2;
+    }
+
+    .speed-line {
+      position: absolute;
+      height: 2px;
+      background: linear-gradient(to right, transparent, #ff8800, transparent);
+      opacity: 0.3;
+      animation: speedMove 1.5s linear infinite;
+    }
+
+    @keyframes speedMove {
+      0% { transform: translateX(-100%); opacity: 0; }
+      50% { opacity: 0.5; }
+      100% { transform: translateX(100%); opacity: 0; }
+    }
+
+    .content-center { 
+      min-width: 0; 
+      position: relative;
+      z-index: 10;
+    }
+    .container { max-width: 100%; margin: 0 auto; }
+
+    .header {
+      text-align: center;
+      padding: 30px 20px;
+      margin-bottom: 30px;
+      background: linear-gradient(135deg, rgba(15, 12, 41, 0.98), rgba(48, 43, 99, 0.98), rgba(36, 36, 62, 0.98));
+      border-radius: 15px;
+      border: 1px solid #00f7ff33;
+      backdrop-filter: blur(10px);
+      position: relative;
+      z-index: 10;
+    }
+
+    .header h1 {
+      font-size: 2rem;
+      color: #00f7ff;
+      text-shadow: 0 0 10px rgba(0, 247, 255, 0.5);
+      margin-bottom: 5px;
+    }
+
+    .header .brand { font-size: 1.1rem; color: #fff; font-weight: bold; }
+
+    .header .chapter-badge {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 5px 20px;
+      background: #00f7ff22;
+      border: 1px solid #00f7ff;
+      border-radius: 20px;
+      color: #00f7ff;
+      font-size: 0.9rem;
+    }
+
+    .topic {
+      background: rgba(17, 17, 51, 0.98);
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 20px;
+      border-left: 4px solid #00f7ff;
+      transition: transform 0.2s ease;
+      backdrop-filter: blur(8px);
+      position: relative;
+      z-index: 10;
+    }
+
+    .topic:hover { transform: translateX(5px); }
+
+    .topic h2 {
+      color: #00f7ff;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .topic p { font-size: 1rem; color: #ccc; margin-bottom: 10px; }
+    .highlight { color: #00f7ff; font-weight: bold; }
+    .hindi { color: #ffa500; font-style: italic; font-size: 0.95rem; }
+
+    .code-block {
+      background: rgba(13, 13, 43, 0.98);
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 10px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 1rem;
+      color: #00ff88;
+      position: relative;
+    }
+
+    .code-label {
+      position: absolute;
+      top: -10px;
+      left: 15px;
+      background: #00f7ff;
+      color: #000;
+      padding: 2px 12px;
+      border-radius: 10px;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+
+    .comment-color { color: #888; font-style: italic; }
+    .keyword-color { color: #ff79c6; }
+    .string-color { color: #f1fa8c; }
+    .number-color { color: #bd93f9; }
+
+    .types-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .type-card {
+      background: rgba(26, 26, 62, 0.95);
+      border: 2px solid;
+      border-radius: 10px;
+      padding: 15px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .type-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 247, 255, 0.3);
+    }
+
+    .type-card.int { border-color: #00ff88; }
+    .type-card.float { border-color: #ffa500; }
+    .type-card.str { border-color: #ff00e6; }
+    .type-card.bool { border-color: #00f7ff; }
+    .type-card.none { border-color: #888; }
+
+    .type-icon {
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+
+    .type-name {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .type-card.int .type-name { color: #00ff88; }
+    .type-card.float .type-name { color: #ffa500; }
+    .type-card.str .type-name { color: #ff00e6; }
+    .type-card.bool .type-name { color: #00f7ff; }
+    .type-card.none .type-name { color: #888; }
+
+    .type-example {
+      font-size: 0.85rem;
+      color: #aaa;
+      font-family: 'Courier New', monospace;
+    }
+
+    .rules-list {
+      background: rgba(26, 26, 62, 0.95);
+      border-radius: 10px;
+      padding: 20px;
+      margin: 15px 0;
+    }
+
+    .rule-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 12px;
+      padding: 10px;
+      background: rgba(0, 247, 255, 0.05);
+      border-radius: 8px;
+      border-left: 3px solid #00f7ff;
+    }
+
+    .rule-item.wrong {
+      border-left-color: #ff4444;
+      background: rgba(255, 68, 68, 0.05);
+    }
+
+    .rule-item.right {
+      border-left-color: #00ff88;
+      background: rgba(0, 255, 136, 0.05);
+    }
+
+    .rule-icon { font-size: 1.2rem; flex-shrink: 0; }
+
+    .operator-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .operator-card {
+      background: rgba(26, 26, 62, 0.95);
+      border-radius: 10px;
+      padding: 15px;
+      border-left: 4px solid;
+    }
+
+    .operator-card.arithmetic { border-color: #00ff88; }
+    .operator-card.assignment { border-color: #ffa500; }
+    .operator-card.comparison { border-color: #ff00e6; }
+    .operator-card.logical { border-color: #00f7ff; }
+
+    .operator-card h3 {
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+
+    .operator-card.arithmetic h3 { color: #00ff88; }
+    .operator-card.assignment h3 { color: #ffa500; }
+    .operator-card.comparison h3 { color: #ff00e6; }
+    .operator-card.logical h3 { color: #00f7ff; }
+
+    .operator-symbols {
+      font-family: 'Courier New', monospace;
+      color: #fff;
+      font-weight: bold;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 5px 10px;
+      border-radius: 5px;
+      display: inline-block;
+      margin-top: 5px;
+    }
+
+    .tip-box {
+      background: rgba(26, 26, 0, 0.95);
+      border: 1px solid #ffa500;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 10px 0;
+      color: #ffa500;
+      font-size: 0.95rem;
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, #00f7ff, transparent);
+      margin: 30px 0;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: #555;
+      font-size: 0.85rem;
+      margin-top: 30px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .footer span { color: #00f7ff; font-weight: bold; }
+
+    .back-btn {
+      display: inline-block;
+      padding: 10px 25px;
+      background: transparent;
+      border: 2px solid #00f7ff;
+      color: #00f7ff;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      margin-top: 20px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .back-btn:hover { background: #00f7ff; color: #000; }
+
+    .test-btn {
+      display: inline-flex;
+      padding: 18px 40px;
+      font-size: 1.3rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: white;
+      background: linear-gradient(135deg, #ff0066, #ff6600);
+      border: none;
+      border-radius: 10px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px rgba(255, 0, 102, 0.4);
+      animation: pulseBtn 1.5s infinite alternate;
+      position: relative;
+      z-index: 10;
+    }
+
+    @keyframes pulseBtn {
+      from { transform: scale(1); box-shadow: 0 0 15px rgba(255, 0, 102, 0.3); }
+      to { transform: scale(1.05); box-shadow: 0 0 30px rgba(255, 0, 102, 0.6); }
+    }
+
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      background: linear-gradient(to right, #00f7ff, #ff8800);
+      z-index: 9999;
+      width: 0%;
+      transition: width 0.1s ease;
+    }
+
+    /* BAAPU */
+    .bapu-container {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      pointer-events: none;
+      animation: bapuEnter 1.5s ease-out;
+    }
+
+    @keyframes bapuEnter {
+      from { opacity: 0; transform: translateX(-150px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .bapu-img {
+      width: 180px;
+      height: auto;
+      filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.4));
+      animation: bapuFloat 4s ease-in-out infinite;
+      pointer-events: auto;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .bapu-img:hover {
+      transform: scale(1.08) rotate(3deg);
+      filter: drop-shadow(0 0 35px rgba(255, 215, 0, 0.6));
+    }
+
+    @keyframes bapuFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+    }
+
+    .bapu-speech {
+      position: absolute;
+      bottom: 195px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #fff8dc, #fff5b7);
+      color: #2c2c2c;
+      padding: 18px 25px;
+      border-radius: 25px;
+      font-family: 'Caveat', cursive;
+      font-size: 1.6rem;
+      font-weight: 700;
+      width: 280px;
+      text-align: center;
+      box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+      border: 3px solid #ffd700;
+      white-space: normal;
+      animation: bubblePulse 2.5s ease-in-out infinite;
+      pointer-events: none;
+      line-height: 1.4;
+      z-index: 2;
+    }
+
+    .bapu-speech::after {
+      content: '';
+      position: absolute;
+      bottom: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 14px solid transparent;
+      border-right: 14px solid transparent;
+      border-top: 14px solid #fff8dc;
+    }
+
+    .bapu-speech::before {
+      content: '';
+      position: absolute;
+      bottom: -17px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 16px solid transparent;
+      border-right: 16px solid transparent;
+      border-top: 16px solid #ffd700;
+    }
+
+    @keyframes bubblePulse {
+      0%, 100% { transform: translateX(-50%) scale(1); }
+      50% { transform: translateX(-50%) scale(1.05); }
+    }
+
+    .bapu-namaste {
+      display: inline-block;
+      margin-left: 5px;
+      font-size: 1.6rem;
+      animation: namasteWave 2s ease-in-out infinite;
+    }
+
+    @keyframes namasteWave {
+      0%, 100% { transform: rotate(-15deg); }
+      50% { transform: rotate(15deg); }
+    }
+
+    @media (max-width: 1200px) {
+      .main-wrapper { grid-template-columns: 1fr 220px; }
+      .character-img { width: 170px; height: 170px; }
+      .aura, .power-ring { width: 200px; height: 200px; }
+      .power-ring-2 { width: 160px; height: 160px; }
+      .bapu-img { width: 140px; }
+      .bapu-speech { bottom: 155px; font-size: 1.3rem; width: 220px; }
+    }
+
+    @media (max-width: 900px) {
+      .main-wrapper { grid-template-columns: 1fr; gap: 10px; }
+      .character-right { position: relative; height: auto; top: 0; margin-bottom: 20px; }
+      .character-img { width: 120px; height: 120px; }
+      .aura { width: 180px; height: 180px; opacity: 0.4; }
+      .power-ring { width: 150px; height: 150px; }
+      .power-ring-2 { width: 130px; height: 130px; }
+      .name-tag { font-size: 0.7rem; padding: 4px 10px; }
+      .speech { font-size: 0.75rem; max-width: 200px; padding: 10px; min-height: 50px; }
+      .header h1 { font-size: 1.5rem; }
+      .test-btn { font-size: 1rem; padding: 14px 25px; }
+      
+      .bapu-container { bottom: 10px; left: 10px; }
+      .bapu-img { width: 100px; }
+      .bapu-speech { bottom: 115px; font-size: 1.1rem; padding: 12px 18px; width: 200px; }
+    }
+
+    @media (max-width: 600px) {
+      .bapu-img { width: 85px; }
+      .bapu-speech { bottom: 100px; font-size: 1rem; width: 180px; padding: 10px 15px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <!-- BAAPU -->
+  <div class="bapu-container">
+    <div class="bapu-speech">
+      Chapter 2 padho beta!<span class="bapu-namaste">🙏</span>
+    </div>
+    <img src="bapu.png" alt="Mahatma Gandhi" class="bapu-img" />
+  </div>
+
+  <div class="main-wrapper">
+
+    <div class="content-center">
+      <div class="container">
+
+        <div class="header">
+          <h1>📘 Python Chapter 2</h1>
+          <div class="brand">Written & Designed by Code With #Shyam</div>
+          <div class="chapter-badge">Comments, Variables, Data Types & Operators</div>
+        </div>
+
+        <!-- COMMENTS SECTION -->
+        <div class="topic">
+          <h2>💬 Comments Kya Hote Hain?</h2>
+          <p>
+            <span class="hindi">Comments woh lines hoti hain jo Python IGNORE karta hai — run nahi karta.</span>
+          </p>
+          <p>Comments ka use kyu karte hain?</p>
+          <ul style="color:#bbb; padding-left:20px; margin-top:5px;">
+            <li>📝 Code samjhaane ke liye</li>
+            <li>👤 Author ka naam likhne ke liye</li>
+            <li>📅 Date mention karne ke liye</li>
+            <li>💡 Notes add karne ke liye</li>
+          </ul>
+          <div class="tip-box">
+            💡 <strong>Example:</strong> Jaise <strong>Prashant</strong> apni notebook mein margin pe extra notes likhta hai jo exam mein count nahi hoti — waise hi comments code mein hoti hain, computer unko ignore karta hai!
+          </div>
+        </div>
+
+        <!-- SINGLE LINE COMMENTS -->
+        <div class="topic">
+          <h2>1️⃣ Single Line Comments</h2>
+          <p>Ek line ka comment likhne ke liye <span class="highlight">#</span> symbol use karo:</p>
+          <div class="code-block">
+            <span class="code-label">Python</span><br>
+            <span class="comment-color"># Ye ek single line comment hai</span><br>
+            print("Hello World")&nbsp;&nbsp;<span class="comment-color"># Ye bhi comment hai</span>
+          </div>
+          <p><span class="hindi">Sab kuch jo # ke baad hoga wo comment ban jayega!</span></p>
+        </div>
+
+        <!-- MULTI LINE COMMENTS -->
+        <div class="topic">
+          <h2>2️⃣ Multi-Line Comments</h2>
+          <p>Bahut saari lines ka comment likhne ke liye <span class="highlight">triple quotes</span> use karo:</p>
+          <div class="code-block">
+            <span class="code-label">Python</span><br>
+            <span class="string-color">"""</span><br>
+            <span class="string-color">Ye ek multi-line comment hai</span><br>
+            <span class="string-color">Author: Shyam</span><br>
+            <span class="string-color">Date: 2025</span><br>
+            <span class="string-color">"""</span><br>
+            print("Hello")
+          </div>
+          <div class="tip-box">
+            💡 <strong>Example:</strong> Jaise <strong>Aham</strong> ek chhoti si note likhta hai (#), aur <strong>Nishant</strong> pura paragraph likhta hai ("""...""") — dono valid hain!
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- VARIABLES SECTION -->
+        <div class="topic">
+          <h2>📦 Variables Kya Hote Hain?</h2>
+          <p>
+            <span class="hindi">Variable ek DABBA hai jismein tum koi value store kar sakte ho.</span>
+          </p>
+          <div class="code-block">
+            <span class="code-label">Python</span><br>
+            a = <span class="number-color">30</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment-color"># variable = value ko store karta hai</span><br>
+            b = <span class="string-color">"Shyam"</span>&nbsp;&nbsp;<span class="comment-color"># keyword = reserved words</span><br>
+            c = <span class="number-color">71.22</span>&nbsp;&nbsp;&nbsp;<span class="comment-color"># identifier = variable/function ka naam</span>
+          </div>
+          <div class="tip-box">
+            💡 <strong>Example:</strong> Jaise <strong>Aditya</strong> ke ghar mein alag alag dabbe hain — ek mein cheeni, ek mein namak, ek mein daal. Waise hi variables alag alag values store karte hain!
+          </div>
+        </div>
+
+        <!-- DATA TYPES -->
+        <div class="topic">
+          <h2>🎯 Data Types (5 Main Types)</h2>
+          <p>Python mein 5 main data types hote hain:</p>
+          <div class="types-grid">
+            <div class="type-card int">
+              <div class="type-icon">🔢</div>
+              <div class="type-name">Integer</div>
+              <div class="type-example">a = 71</div>
+            </div>
+            <div class="type-card float">
+              <div class="type-icon">💯</div>
+              <div class="type-name">Float</div>
+              <div class="type-example">b = 88.44</div>
+            </div>
+            <div class="type-card str">
+              <div class="type-icon">📝</div>
+              <div class="type-name">String</div>
+              <div class="type-example">c = "Shyam"</div>
+            </div>
+            <div class="type-card bool">
+              <div class="type-icon">✅</div>
+              <div class="type-name">Boolean</div>
+              <div class="type-example">d = True</div>
+            </div>
+            <div class="type-card none">
+              <div class="type-icon">⚪</div>
+              <div class="type-name">None</div>
+              <div class="type-example">e = None</div>
+            </div>
+          </div>
+          <div class="tip-box" style="margin-top:15px;">
+            💡 <strong>Best Part:</strong> Python KHUD samajh leta hai konsa data type hai — tumhe declare nahi karna padta!
+          </div>
+        </div>
+
+        <!-- AUTO DETECT -->
+        <div class="topic">
+          <h2>🤖 Python Auto-Detect Karta Hai</h2>
+          <p>Python fantastic hai — usse pata chal jata hai konsa data type hai:</p>
+          <div class="code-block">
+            <span class="code-label">Python</span><br>
+            a = <span class="number-color">71</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment-color"># a is int</span><br>
+            b = <span class="number-color">88.44</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment-color"># b is float</span><br>
+            name = <span class="string-color">"Shyam"</span>&nbsp;<span class="comment-color"># name is str</span>
+          </div>
+          <div class="tip-box">
+            💡 <strong>Example:</strong> Jaise <strong>Babita Mam</strong> ek dekh ke pehchan leti hain ki kaunsa bachcha shararti hai aur kaunsa seedha — waise Python bhi values ka type khud pehchan leta hai! 👩‍🏫
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- IDENTIFIER RULES -->
+        <div class="topic">
+          <h2>📏 Variable Name Rules</h2>
+          <p><span class="hindi">Variable ka naam rakhne ke kuch rules hain:</span></p>
+          <div class="rules-list">
+            <div class="rule-item right">
+              <span class="rule-icon">✅</span>
+              <div>
+                <strong>Alphabets, digits, underscore</strong> use kar sakte ho<br>
+                <span style="color:#00ff88; font-family:monospace;">Example: shyam, one8, seven_</span>
+              </div>
+            </div>
+            <div class="rule-item right">
+              <span class="rule-icon">✅</span>
+              <div>
+                <strong>Alphabet ya underscore</strong> se start ho sakta hai<br>
+                <span style="color:#00ff88; font-family:monospace;">Example: shyam, _seven</span>
+              </div>
+            </div>
+            <div class="rule-item wrong">
+              <span class="rule-icon">❌</span>
+              <div>
+                <strong>Digit</strong> se start NAHI ho sakta<br>
+                <span style="color:#ff4444; font-family:monospace;">Wrong: 1shyam, 8one</span>
+              </div>
+            </div>
+            <div class="rule-item wrong">
+              <span class="rule-icon">❌</span>
+              <div>
+                <strong>Space</strong> allowed nahi hai<br>
+                <span style="color:#ff4444; font-family:monospace;">Wrong: my name (Use: my_name)</span>
+              </div>
+            </div>
+          </div>
+          <div class="tip-box">
+            💡 <strong>Valid Examples:</strong> shyam, prashant, one8, seven_, _seven, my_age<br>
+            <strong>Invalid:</strong> 1shyam, my name, @shyam
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- OPERATORS -->
+        <div class="topic">
+          <h2>➕ Operators in Python</h2>
+          <p><span class="hindi">Operators wo symbols hain jo kuch operation perform karte hain.</span></p>
+          <p>4 types ke operators hain:</p>
+          
+          <div class="operator-grid">
+            <div class="operator-card arithmetic">
+              <h3>➕ Arithmetic Operators</h3>
+              <p style="color:#ccc; font-size:0.9rem;">Math ke liye</p>
+              <div class="operator-symbols">+ &nbsp; - &nbsp; * &nbsp; /</div>
+            </div>
+            <div class="operator-card assignment">
+              <h3>📝 Assignment Operators</h3>
+              <p style="color:#ccc; font-size:0.9rem;">Value assign karne ke liye</p>
+              <div class="operator-symbols">= &nbsp; += &nbsp; -=</div>
+            </div>
+            <div class="operator-card comparison">
+              <h3>🔍 Comparison Operators</h3>
+              <p style="color:#ccc; font-size:0.9rem;">Compare karne ke liye</p>
+              <div class="operator-symbols">== &nbsp; > &nbsp; < &nbsp; !=</div>
+            </div>
+            <div class="operator-card logical">
+              <h3>🧠 Logical Operators</h3>
+              <p style="color:#ccc; font-size:0.9rem;">Logic ke liye</p>
+              <div class="operator-symbols">and &nbsp; or &nbsp; not</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- OPERATORS EXAMPLES -->
+        <div class="topic">
+          <h2>💻 Operators Examples</h2>
+          <div class="code-block">
+            <span class="code-label">Arithmetic</span><br>
+            a = <span class="number-color">10</span> + <span class="number-color">5</span>&nbsp;&nbsp;&nbsp;<span class="comment-color"># 15</span><br>
+            b = <span class="number-color">20</span> - <span class="number-color">8</span>&nbsp;&nbsp;&nbsp;<span class="comment-color"># 12</span><br>
+            c = <span class="number-color">4</span> * <span class="number-color">3</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment-color"># 12</span><br>
+            d = <span class="number-color">100</span> / <span class="number-color">4</span>&nbsp;&nbsp;<span class="comment-color"># 25.0</span>
+          </div>
+          <div class="code-block">
+            <span class="code-label">Comparison</span><br>
+            x = <span class="number-color">10</span> == <span class="number-color">10</span>&nbsp;&nbsp;<span class="comment-color"># True</span><br>
+            y = <span class="number-color">5</span> > <span class="number-color">3</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment-color"># True</span><br>
+            z = <span class="number-color">7</span> != <span class="number-color">7</span>&nbsp;&nbsp;&nbsp;<span class="comment-color"># False</span>
+          </div>
+          <div class="code-block">
+            <span class="code-label">Logical</span><br>
+            p = <span class="keyword-color">True</span> <span class="keyword-color">and</span> <span class="keyword-color">False</span>&nbsp;&nbsp;<span class="comment-color"># False</span><br>
+            q = <span class="keyword-color">True</span> <span class="keyword-color">or</span> <span class="keyword-color">False</span>&nbsp;&nbsp;&nbsp;<span class="comment-color"># True</span><br>
+            r = <span class="keyword-color">not</span> <span class="keyword-color">True</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment-color"># False</span>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- PRACTICE SET -->
+        <div class="topic">
+          <h2>📝 Practice Set (Try Karo!)</h2>
+          <p><span class="hindi">Ye questions try karo — apni skills test karne ke liye:</span></p>
+          <ol style="color:#ccc; padding-left:25px; margin-top:10px; line-height:2;">
+            <li>🌟 <strong>Twinkle Twinkle</strong> poem ko Python mein print karo</li>
+            <li>🧮 REPL mode use karke <strong>5 ka table</strong> print karo</li>
+            <li>📦 Ek <strong>external module</strong> install karo aur use karo</li>
+            <li>📁 <strong>os module</strong> se directory ke contents print karo</li>
+            <li>💬 Upar wale program mein <strong>comments</strong> add karo</li>
+          </ol>
+          <div class="tip-box">
+            💡 <strong>Tip:</strong> Ye sab khud try karo pehle! Fasoge to Community Chat mein pucho — <strong>Prashant, Aham, Aditya</strong> sab help karenge! 🤝
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div style="text-align:center; margin-top:20px; position:relative; z-index:10;">
+          <a href="quiz2.html" class="test-btn">🧠 Chapter 2 - Test Lo!</a>
+        </div>
+
+        <div style="text-align:center; margin-top:15px; position:relative; z-index:10;">
+          <a href="index.html" class="back-btn">⬅ Back to Home</a>
+        </div>
+
+        <div class="footer">
+          Created by <span>Shyam</span> | Chapter 2 Complete ✅
+        </div>
+
+      </div>
+    </div>
+
+    <!-- MODI -->
+    <div class="character-right">
+      <div class="modi-container">
+        <div class="speed-lines">
+          <div class="speed-line" style="top: 15%; animation-delay: 0.2s;"></div>
+          <div class="speed-line" style="top: 35%; animation-delay: 0.5s;"></div>
+          <div class="speed-line" style="top: 55%; animation-delay: 0.8s;"></div>
+          <div class="speed-line" style="top: 75%; animation-delay: 1.1s;"></div>
+        </div>
+
+        <div class="aura"></div>
+        <div class="power-ring"></div>
+        <div class="power-ring power-ring-2"></div>
+
+        <span class="sparkle" style="top: 15%; left: 15%; animation-delay: 0.3s;">⚡</span>
+        <span class="sparkle" style="top: 25%; right: 5%; animation-delay: 0.8s;">🌟</span>
+        <span class="sparkle" style="bottom: 25%; left: 10%; animation-delay: 1.3s;">✨</span>
+        <span class="sparkle" style="bottom: 15%; right: 10%; animation-delay: 1.8s;">💥</span>
+
+        <img src="modi.png" alt="Modi Ji" class="character-img" id="modiImg" />
+
+        <div class="name-tag">🦸 PYTHON MODI 🔥</div>
+
+        <div class="speech" id="speechModi">
+          Variables samjho Mitron! 📦
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const modiDialogues = [
+      "Variables samjho Mitron! 📦",
+      "Comments zaroor likho! 💬",
+      "Data types yaad karo! 🎯",
+      "Operators master karo! ➕",
+      "Practice karte raho! 💪",
+      "Prashant, dhyan de! 📖",
+      "Aham, code likho! 💻",
+      "Aditya, module install karo! 📥",
+      "Nishant, syntax yaad kar! 🐍",
+      "Babita Mam bhi khush hain! 👩‍🏫",
+      "Digital India, Coding India! 🇮🇳",
+      "Achhe din Python ke! 🌅",
+      "Shyam sir ki class hai! 👏",
+      "Chai peeke code karo! ☕"
+    ];
+
+    let modiIdx = 0;
+
+    setInterval(function () {
+      modiIdx = (modiIdx + 1) % modiDialogues.length;
+      const bubble = document.getElementById('speechModi');
+      bubble.style.opacity = '0';
+      setTimeout(function () {
+        bubble.textContent = modiDialogues[modiIdx];
+        bubble.style.opacity = '1';
+      }, 300);
+    }, 4000);
+
+    window.addEventListener('scroll', function () {
+      const scrollY = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = (scrollY / docHeight) * 100;
+      document.getElementById('scrollProgress').style.width = scrollPercent + '%';
+    });
+
+    const modiImg = document.getElementById('modiImg');
+    const speechModi = document.getElementById('speechModi');
+
+    modiImg.addEventListener('mouseenter', function () {
+      speechModi.textContent = "Bahut badhiya beta! 👏";
+    });
+
+    const bapuImg = document.querySelector('.bapu-img');
+    const bapuSpeech = document.querySelector('.bapu-speech');
+    const originalBapuMsg = 'Chapter 2 padho beta!<span class="bapu-namaste">🙏</span>';
+
+    bapuImg.addEventListener('mouseenter', function () {
+      bapuSpeech.innerHTML = 'Ram Ram beta! 🙏 Padhai karo!';
+    });
+
+    bapuImg.addEventListener('mouseleave', function () {
+      bapuSpeech.innerHTML = originalBapuMsg;
+    });
+  </script>
+</body>
+</html>
