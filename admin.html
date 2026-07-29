@@ -15,9 +15,8 @@
       padding: 20px;
     }
 
-    .container { max-width: 1100px; margin: 0 auto; }
+    .container { max-width: 900px; margin: 0 auto; }
 
-    /* Login Screen */
     .login-screen {
       max-width: 400px;
       margin: 100px auto;
@@ -81,11 +80,8 @@
       display: none;
     }
 
-    /* Admin Dashboard */
-    .admin-dashboard {
-      display: none;
-    }
-
+    /* Admin Chat */
+    .admin-dashboard { display: none; }
     .admin-dashboard.active { display: block; }
 
     .admin-header {
@@ -104,205 +100,6 @@
     .admin-header h1 { font-size: 1.5rem; }
     .admin-header p { font-size: 0.9rem; opacity: 0.9; }
 
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
-      margin-bottom: 20px;
-    }
-
-    .stat-card {
-      background: #111133;
-      padding: 20px;
-      border-radius: 12px;
-      text-align: center;
-      border-left: 4px solid #ff6600;
-    }
-
-    .stat-number {
-      font-size: 2rem;
-      font-weight: bold;
-      color: #ff6600;
-    }
-
-    .stat-label {
-      font-size: 0.85rem;
-      color: #aaa;
-      margin-top: 5px;
-    }
-
-    .chats-layout {
-      display: grid;
-      grid-template-columns: 300px 1fr;
-      gap: 20px;
-      min-height: 500px;
-    }
-
-    /* Users List */
-    .users-list {
-      background: #111133;
-      border-radius: 12px;
-      padding: 15px;
-      max-height: 600px;
-      overflow-y: auto;
-    }
-
-    .users-list h3 {
-      color: #ff6600;
-      margin-bottom: 15px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid #333;
-    }
-
-    .user-item {
-      padding: 12px;
-      background: #1a1a3e;
-      border-radius: 8px;
-      margin-bottom: 8px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border-left: 3px solid transparent;
-    }
-
-    .user-item:hover {
-      background: #252550;
-      border-left-color: #ff6600;
-    }
-
-    .user-item.active {
-      background: #252550;
-      border-left-color: #ff6600;
-    }
-
-    .user-name {
-      color: #fff;
-      font-weight: bold;
-      font-size: 0.95rem;
-    }
-
-    .user-class {
-      color: #aaa;
-      font-size: 0.8rem;
-      margin-top: 3px;
-    }
-
-    .user-time {
-      color: #666;
-      font-size: 0.75rem;
-      margin-top: 3px;
-    }
-
-    .unread-badge {
-      background: #ff0066;
-      color: #fff;
-      border-radius: 50%;
-      padding: 2px 8px;
-      font-size: 0.75rem;
-      float: right;
-    }
-
-    /* Chat Area */
-    .chat-area {
-      background: #111133;
-      border-radius: 12px;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    .chat-area-header {
-      background: #1a1a3e;
-      padding: 15px 20px;
-      border-bottom: 1px solid #333;
-    }
-
-    .chat-area-header h3 { color: #ff6600; }
-    .chat-area-header p { color: #aaa; font-size: 0.85rem; margin-top: 3px; }
-
-    .chat-messages {
-      flex: 1;
-      padding: 20px;
-      overflow-y: auto;
-      max-height: 400px;
-      min-height: 300px;
-    }
-
-    .no-chat {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 300px;
-      color: #666;
-      text-align: center;
-    }
-
-    .msg {
-      margin-bottom: 12px;
-      display: flex;
-    }
-
-    .msg.student { justify-content: flex-start; }
-    .msg.admin { justify-content: flex-end; }
-
-    .msg-bubble {
-      max-width: 70%;
-      padding: 10px 15px;
-      border-radius: 12px;
-      font-size: 0.95rem;
-    }
-
-    .msg.student .msg-bubble {
-      background: #1a1a3e;
-      color: #fff;
-    }
-
-    .msg.admin .msg-bubble {
-      background: linear-gradient(135deg, #ff6600, #ff0066);
-      color: #fff;
-    }
-
-    .msg-time {
-      font-size: 0.7rem;
-      color: #666;
-      margin-top: 3px;
-    }
-
-    .reply-area {
-      padding: 15px;
-      background: #1a1a3e;
-      display: flex;
-      gap: 10px;
-      border-top: 1px solid #333;
-    }
-
-    .reply-input {
-      flex: 1;
-      padding: 12px 15px;
-      background: #0a0a1a;
-      border: 1px solid #333;
-      border-radius: 20px;
-      color: #fff;
-      font-size: 0.95rem;
-      outline: none;
-    }
-
-    .reply-input:focus { border-color: #ff6600; }
-
-    .reply-btn {
-      padding: 12px 20px;
-      background: linear-gradient(135deg, #ff6600, #ff0066);
-      color: #fff;
-      border: none;
-      border-radius: 20px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .reply-btn:hover {
-      transform: scale(1.05);
-    }
-
     .logout-btn {
       padding: 8px 20px;
       background: transparent;
@@ -313,74 +110,254 @@
       font-weight: bold;
     }
 
-    @media (max-width: 800px) {
-      .chats-layout { grid-template-columns: 1fr; }
-      .stats { grid-template-columns: 1fr; }
+    .chat-container {
+      background: #111133;
+      border-radius: 15px;
+      overflow: hidden;
+      border: 2px solid #ff6600;
+    }
+
+    .chat-header {
+      background: linear-gradient(135deg, #00f7ff, #0088ff);
+      color: #000;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .chat-header-left {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .group-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+    }
+
+    .chat-header-info h3 { font-size: 1.2rem; }
+    .chat-header-info span { font-size: 0.85rem; opacity: 0.85; }
+
+    .online-badge {
+      background: rgba(0,0,0,0.2);
+      padding: 5px 12px;
+      border-radius: 15px;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: #00ff00;
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .chat-body {
+      height: 500px;
+      overflow-y: auto;
+      padding: 20px;
+      background: #0a0a1a;
+    }
+
+    .chat-body::-webkit-scrollbar { width: 8px; }
+    .chat-body::-webkit-scrollbar-thumb {
+      background: #ff660044;
+      border-radius: 10px;
+    }
+
+    .date-separator {
+      text-align: center;
+      margin: 15px 0;
+      color: #666;
+      font-size: 0.8rem;
+    }
+
+    .date-separator span {
+      background: #0a0a1a;
+      padding: 5px 15px;
+      border-radius: 12px;
+      border: 1px solid #333;
+    }
+
+    .message {
+      margin-bottom: 15px;
+      display: flex;
+      animation: messageIn 0.3s ease;
+      gap: 10px;
+    }
+
+    @keyframes messageIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .message.own { flex-direction: row-reverse; }
+
+    .message-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #fff;
+      flex-shrink: 0;
+      font-size: 1rem;
+    }
+
+    .message-content { max-width: 70%; }
+
+    .message.own .message-content {
+      align-items: flex-end;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .message-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 3px;
+      font-size: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .message-name { font-weight: bold; color: #00f7ff; }
+    .message.own .message-name { color: #ffd700; }
+    .message-class { color: #666; font-size: 0.75rem; }
+
+    .admin-badge {
+      background: linear-gradient(135deg, #ffd700, #ff6600);
+      color: #000;
+      padding: 2px 8px;
+      border-radius: 8px;
+      font-size: 0.7rem;
+      font-weight: bold;
+    }
+
+    .message-bubble {
+      padding: 10px 15px;
+      border-radius: 15px;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      word-wrap: break-word;
+      background: #1a1a3e;
+      color: #fff;
+      border-bottom-left-radius: 4px;
+    }
+
+    .message.own .message-bubble {
+      background: linear-gradient(135deg, #ffd700, #ff6600);
+      color: #000;
+      border-bottom-right-radius: 4px;
+      border-bottom-left-radius: 15px;
+      border: 2px solid #ffaa00;
+    }
+
+    .message-time { font-size: 0.7rem; color: #666; margin-top: 3px; }
+    .message.own .message-time { text-align: right; }
+
+    .chat-input-area {
+      padding: 15px;
+      background: #111133;
+      display: flex;
+      gap: 10px;
+      border-top: 1px solid #333;
+    }
+
+    .chat-input {
+      flex: 1;
+      padding: 12px 15px;
+      background: #0a0a1a;
+      border: 1px solid #ff6600;
+      border-radius: 25px;
+      color: #fff;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .send-btn {
+      padding: 12px 25px;
+      background: linear-gradient(135deg, #ffd700, #ff6600);
+      border: none;
+      color: #000;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+    }
+
+    .send-btn:hover { transform: scale(1.05); }
+
+    @media (max-width: 600px) {
+      .chat-body { height: 400px; }
+      .message-content { max-width: 80%; }
     }
   </style>
 </head>
 <body>
   <div class="container">
 
-    <!-- LOGIN SCREEN -->
     <div class="login-screen" id="loginScreen">
-      <h1>🔐 Admin Panel</h1>
-      <p>Sirf Shyam Sir hi login kar sakte hain</p>
+      <h1>🔐 Admin Access</h1>
+      <p>Shyam Sir login karo</p>
       <input type="password" class="login-input" id="passwordInput" placeholder="Password" onkeypress="if(event.key==='Enter') checkPassword()" />
-      <button class="login-btn" onclick="checkPassword()">Login 🚀</button>
-      <div class="error" id="errorMsg">❌ Galat password! Dobara try kar</div>
+      <button class="login-btn" onclick="checkPassword()">Login as Admin 👑</button>
+      <div class="error" id="errorMsg">❌ Galat password!</div>
     </div>
 
-    <!-- ADMIN DASHBOARD -->
     <div class="admin-dashboard" id="adminDashboard">
       <div class="admin-header">
         <div>
-          <h1>👑 Shyam Sir - Admin Panel</h1>
-          <p>Sab students ke messages ek jagah</p>
+          <h1>👑 Admin Mode — Shyam Sir</h1>
+          <p>Tera message admin badge ke saath dikhega</p>
         </div>
         <button class="logout-btn" onclick="logout()">Logout</button>
       </div>
 
-      <div class="stats">
-        <div class="stat-card">
-          <div class="stat-number" id="totalUsers">0</div>
-          <div class="stat-label">Total Students</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number" id="totalMessages">0</div>
-          <div class="stat-label">Total Messages</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number" id="activeToday">0</div>
-          <div class="stat-label">Active Today</div>
-        </div>
-      </div>
-
-      <div class="chats-layout">
-        <div class="users-list">
-          <h3>👥 Students</h3>
-          <div id="usersList"></div>
-        </div>
-
-        <div class="chat-area">
-          <div class="chat-area-header" id="chatHeader">
-            <h3>Select a student</h3>
-            <p>Left side se student choose karo</p>
-          </div>
-
-          <div class="chat-messages" id="chatMessages">
-            <div class="no-chat">
-              <div>
-                <div style="font-size:3rem;">💬</div>
-                <p style="margin-top:10px;">Koi student select karo</p>
-              </div>
+      <div class="chat-container">
+        <div class="chat-header">
+          <div class="chat-header-left">
+            <div class="group-icon">🐍</div>
+            <div class="chat-header-info">
+              <h3>Python Learners Group</h3>
+              <span id="memberCount">Loading...</span>
             </div>
           </div>
-
-          <div class="reply-area" id="replyArea" style="display:none;">
-            <input type="text" class="reply-input" id="replyInput" placeholder="Reply likho..." onkeypress="if(event.key==='Enter') sendReply()" />
-            <button class="reply-btn" onclick="sendReply()">Send ➤</button>
+          <div class="online-badge">
+            <span class="status-dot"></span>
+            <span id="onlineCount">Live</span>
           </div>
+        </div>
+
+        <div class="chat-body" id="chatBody">
+          <div style="text-align:center; color:#666; padding:20px;">Loading...</div>
+        </div>
+
+        <div class="chat-input-area">
+          <input type="text" class="chat-input" id="chatInput" placeholder="Admin ke roop mein message likho..." maxlength="500" onkeypress="if(event.key==='Enter') sendMessage()" />
+          <button class="send-btn" onclick="sendMessage()">Send 👑</button>
         </div>
       </div>
     </div>
@@ -389,7 +366,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-    import { getDatabase, ref, push, onValue, get } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+    import { getDatabase, ref, push, onValue, set, onDisconnect } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyC8QH1r20GnrSpY9jfxaZKbxSX7OOwA5AY",
@@ -404,11 +381,11 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // ⚠️ IMPORTANT: YAHAN APNA PASSWORD DAAL!
-    const ADMIN_PASSWORD = "shyam@7878";
+    // ⚠️ APNA PASSWORD YAHAN DAAL!
+    const ADMIN_PASSWORD = "shyam@123";
 
-    let currentUserId = null;
-    let currentUserName = '';
+    const adminId = 'shyam_sir_admin';
+    const adminName = 'Shyam Sir';
 
     window.checkPassword = function() {
       const pass = document.getElementById('passwordInput').value;
@@ -426,7 +403,6 @@
       location.reload();
     };
 
-    // Auto login if session exists
     if (localStorage.getItem('adminLoggedIn') === 'true') {
       showDashboard();
     }
@@ -434,150 +410,130 @@
     function showDashboard() {
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('adminDashboard').classList.add('active');
-      loadAllChats();
+      loadCommunityChat();
+      trackAdminOnline();
     }
 
-    function loadAllChats() {
-      const chatsRef = ref(db, 'chats');
-      onValue(chatsRef, (snapshot) => {
-        const data = snapshot.val();
-        const usersList = document.getElementById('usersList');
-        usersList.innerHTML = '';
+    window.sendMessage = function() {
+      const input = document.getElementById('chatInput');
+      const message = input.value.trim();
+      if (!message) return;
 
-        if (!data) {
-          usersList.innerHTML = '<p style="color:#666; text-align:center; padding:20px;">Koi messages nahi abhi</p>';
-          document.getElementById('totalUsers').textContent = '0';
-          document.getElementById('totalMessages').textContent = '0';
-          return;
-        }
-
-        let totalMsgs = 0;
-        let activeToday = 0;
-        const today = new Date().setHours(0,0,0,0);
-
-        const users = Object.entries(data);
-        users.sort((a, b) => {
-          const timeA = a[1].info?.lastActive || 0;
-          const timeB = b[1].info?.lastActive || 0;
-          return timeB - timeA;
-        });
-
-        users.forEach(([userId, userData]) => {
-          const info = userData.info || {};
-          const messages = userData.messages || {};
-          const msgCount = Object.keys(messages).length;
-          totalMsgs += msgCount;
-
-          if (info.lastActive >= today) activeToday++;
-
-          const lastActive = info.lastActive ? new Date(info.lastActive) : null;
-          const timeStr = lastActive ? formatTime(lastActive) : '';
-
-          const userDiv = document.createElement('div');
-          userDiv.className = 'user-item';
-          userDiv.onclick = () => selectUser(userId, info.name || 'Unknown', info.class || '');
-          userDiv.innerHTML = `
-            <div class="user-name">${info.name || 'Unknown'} <span class="unread-badge">${msgCount}</span></div>
-            <div class="user-class">${info.class || 'N/A'}</div>
-            <div class="user-time">${timeStr}</div>
-          `;
-
-          if (currentUserId === userId) {
-            userDiv.classList.add('active');
-          }
-
-          usersList.appendChild(userDiv);
-        });
-
-        document.getElementById('totalUsers').textContent = users.length;
-        document.getElementById('totalMessages').textContent = totalMsgs;
-        document.getElementById('activeToday').textContent = activeToday;
-
-        // Reload current chat if selected
-        if (currentUserId) {
-          loadUserMessages(currentUserId);
-        }
-      });
-    }
-
-    window.selectUser = function(userId, name, cls) {
-      currentUserId = userId;
-      currentUserName = name;
-
-      document.getElementById('chatHeader').innerHTML = `
-        <h3>${name}</h3>
-        <p>${cls}</p>
-      `;
-
-      document.getElementById('replyArea').style.display = 'flex';
-
-      // Highlight active
-      document.querySelectorAll('.user-item').forEach(el => el.classList.remove('active'));
-      event.currentTarget.classList.add('active');
-
-      loadUserMessages(userId);
-    };
-
-    function loadUserMessages(userId) {
-      const messagesRef = ref(db, 'chats/' + userId + '/messages');
-      onValue(messagesRef, (snapshot) => {
-        const chatMessages = document.getElementById('chatMessages');
-        chatMessages.innerHTML = '';
-
-        const data = snapshot.val();
-        if (!data) {
-          chatMessages.innerHTML = '<div class="no-chat"><p>Koi messages nahi</p></div>';
-          return;
-        }
-
-        const sorted = Object.values(data).sort((a, b) => a.timestamp - b.timestamp);
-        sorted.forEach(msg => {
-          const msgDiv = document.createElement('div');
-          msgDiv.className = 'msg ' + (msg.sender === 'admin' ? 'admin' : 'student');
-
-          const d = new Date(msg.timestamp);
-          const time = d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
-
-          msgDiv.innerHTML = `
-            <div>
-              <div class="msg-bubble">${msg.text}</div>
-              <div class="msg-time">${time}</div>
-            </div>
-          `;
-          chatMessages.appendChild(msgDiv);
-        });
-
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-      });
-    }
-
-    window.sendReply = function() {
-      const input = document.getElementById('replyInput');
-      const text = input.value.trim();
-      if (!text || !currentUserId) return;
-
-      const messagesRef = ref(db, 'chats/' + currentUserId + '/messages');
+      const messagesRef = ref(db, 'community/messages');
       push(messagesRef, {
-        text: text,
-        sender: 'admin',
-        senderName: 'Shyam Sir',
+        text: message,
+        senderName: adminName,
+        senderClass: 'Teacher',
+        senderId: adminId,
+        isAdmin: true,
         timestamp: Date.now()
       });
 
       input.value = '';
     };
 
-    function formatTime(date) {
-      const now = new Date();
-      const diff = now - date;
-      const mins = Math.floor(diff / 60000);
-      const hours = Math.floor(diff / 3600000);
-      const days = Math.floor(diff / 86400000);
+    const avatarColors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#6c5ce7', '#a29bfe', '#fd79a8', '#00b894'];
 
-      if (mins < 1) return 'Just now';
-      if (mins < 60) return mins + ' min ago';
-      if (hours < 24) return hours + ' hour ago';
-      return days + ' day ago';
+    function getAvatarColor(name) {
+      const index = name.charCodeAt(0) % avatarColors.length;
+      return avatarColors[index];
+    }
+
+    function loadCommunityChat() {
+      const messagesRef = ref(db, 'community/messages');
+      onValue(messagesRef, (snapshot) => {
+        const chatBody = document.getElementById('chatBody');
+        chatBody.innerHTML = '';
+
+        const data = snapshot.val();
+        if (!data) {
+          chatBody.innerHTML = '<div style="text-align:center; color:#666; padding:40px;">Community abhi khali hai!</div>';
+          return;
+        }
+
+        const messages = Object.values(data).sort((a, b) => a.timestamp - b.timestamp);
+        let lastDate = '';
+
+        messages.forEach(msg => {
+          const msgDate = new Date(msg.timestamp).toLocaleDateString('en-IN');
+          if (msgDate !== lastDate) {
+            const separator = document.createElement('div');
+            separator.className = 'date-separator';
+            separator.innerHTML = `<span>📅 ${msgDate}</span>`;
+            chatBody.appendChild(separator);
+            lastDate = msgDate;
+          }
+          addMessage(msg);
+        });
+
+        chatBody.scrollTop = chatBody.scrollHeight;
+      });
+    }
+
+    function addMessage(msg) {
+      const chatBody = document.getElementById('chatBody');
+      const messageDiv = document.createElement('div');
+      const isOwn = msg.senderId === adminId;
+      const isAdmin = msg.isAdmin === true;
+
+      let className = 'message';
+      if (isOwn) className += ' own';
+      messageDiv.className = className;
+
+      const time = new Date(msg.timestamp);
+      const timeStr = time.getHours().toString().padStart(2,'0') + ':' + time.getMinutes().toString().padStart(2,'0');
+
+      const avatarLetter = (msg.senderName || 'U')[0].toUpperCase();
+      const avatarColor = isAdmin ? '#ffd700' : getAvatarColor(msg.senderName || 'User');
+
+      messageDiv.innerHTML = `
+        <div class="message-avatar" style="background: ${avatarColor};">${avatarLetter}</div>
+        <div class="message-content">
+          <div class="message-info">
+            <span class="message-name">${escapeHtml(msg.senderName || 'Unknown')}</span>
+            ${isAdmin ? '<span class="admin-badge">👑 SHYAM SIR</span>' : `<span class="message-class">${escapeHtml(msg.senderClass || '')}</span>`}
+          </div>
+          <div class="message-bubble">${escapeHtml(msg.text)}</div>
+          <div class="message-time">${timeStr}</div>
+        </div>
+      `;
+
+      chatBody.appendChild(messageDiv);
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function trackAdminOnline() {
+      const userStatusRef = ref(db, 'community/online/' + adminId);
+      set(userStatusRef, {
+        name: adminName,
+        class: 'Teacher',
+        isAdmin: true,
+        lastSeen: Date.now()
+      });
+
+      onDisconnect(userStatusRef).remove();
+
+      const onlineRef = ref(db, 'community/online');
+      onValue(onlineRef, (snapshot) => {
+        const data = snapshot.val();
+        const count = data ? Object.keys(data).length : 0;
+        document.getElementById('onlineCount').textContent = count + ' online';
+        document.getElementById('memberCount').textContent = count + ' members active';
+      });
+
+      setInterval(() => {
+        set(userStatusRef, {
+          name: adminName,
+          class: 'Teacher',
+          isAdmin: true,
+          lastSeen: Date.now()
+        });
+      }, 30000);
     }
   </script>
 </body>
