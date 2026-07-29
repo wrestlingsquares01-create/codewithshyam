@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Chat with Shyam Sir | Code With #Shyam</title>
+  <title>Community Chat | Code With #Shyam</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -15,7 +15,7 @@
       padding: 20px;
     }
 
-    .container { max-width: 700px; margin: 0 auto; }
+    .container { max-width: 900px; margin: 0 auto; }
 
     .header {
       text-align: center;
@@ -43,6 +43,8 @@
       padding: 40px 30px;
       text-align: center;
       border: 1px solid #00f7ff33;
+      max-width: 500px;
+      margin: 0 auto;
     }
 
     .name-screen h2 {
@@ -97,7 +99,7 @@
       box-shadow: 0 0 20px rgba(0, 247, 255, 0.5);
     }
 
-    /* Chat Interface */
+    /* Community Chat Interface */
     .chat-container {
       background: #111133;
       border-radius: 15px;
@@ -111,35 +113,49 @@
     .chat-header {
       background: linear-gradient(135deg, #00f7ff, #0088ff);
       color: #000;
-      padding: 15px;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .chat-header-left {
       display: flex;
       align-items: center;
       gap: 15px;
     }
 
-    .chat-avatar {
-      width: 45px;
-      height: 45px;
+    .group-icon {
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
       background: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #00f7ff;
+      font-size: 1.8rem;
     }
 
-    .chat-header-info h3 { font-size: 1.1rem; margin-bottom: 2px; }
-    .chat-header-info span { font-size: 0.8rem; opacity: 0.8; }
+    .chat-header-info h3 { font-size: 1.2rem; margin-bottom: 2px; }
+    .chat-header-info span { font-size: 0.85rem; opacity: 0.85; }
+
+    .online-badge {
+      background: rgba(0,0,0,0.2);
+      padding: 5px 12px;
+      border-radius: 15px;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
 
     .status-dot {
       width: 8px;
       height: 8px;
       background: #00ff00;
       border-radius: 50%;
-      display: inline-block;
-      margin-right: 5px;
       animation: pulse 1.5s infinite;
     }
 
@@ -149,22 +165,40 @@
     }
 
     .chat-body {
-      height: 400px;
+      height: 500px;
       overflow-y: auto;
       padding: 20px;
       background: #0a0a1a;
     }
 
-    .chat-body::-webkit-scrollbar { width: 6px; }
+    .chat-body::-webkit-scrollbar { width: 8px; }
     .chat-body::-webkit-scrollbar-thumb {
       background: #00f7ff44;
       border-radius: 10px;
     }
 
+    /* Date Separator */
+    .date-separator {
+      text-align: center;
+      margin: 15px 0;
+      color: #666;
+      font-size: 0.8rem;
+      position: relative;
+    }
+
+    .date-separator span {
+      background: #0a0a1a;
+      padding: 5px 15px;
+      border-radius: 12px;
+      border: 1px solid #333;
+    }
+
+    /* Messages */
     .message {
       margin-bottom: 15px;
       display: flex;
       animation: messageIn 0.3s ease;
+      gap: 10px;
     }
 
     @keyframes messageIn {
@@ -172,36 +206,96 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .message.sent { justify-content: flex-end; }
-    .message.received { justify-content: flex-start; }
+    .message.own { flex-direction: row-reverse; }
+
+    .message-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #fff;
+      flex-shrink: 0;
+      font-size: 1rem;
+    }
+
+    .message-content {
+      max-width: 70%;
+    }
+
+    .message.own .message-content {
+      align-items: flex-end;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .message-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 3px;
+      font-size: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .message-name {
+      font-weight: bold;
+      color: #00f7ff;
+    }
+
+    .message.own .message-name {
+      color: #00ff88;
+    }
+
+    .message-class {
+      color: #666;
+      font-size: 0.75rem;
+    }
+
+    .admin-badge {
+      background: linear-gradient(135deg, #ffd700, #ff6600);
+      color: #000;
+      padding: 2px 8px;
+      border-radius: 8px;
+      font-size: 0.7rem;
+      font-weight: bold;
+    }
 
     .message-bubble {
-      max-width: 75%;
       padding: 10px 15px;
       border-radius: 15px;
       font-size: 0.95rem;
       line-height: 1.4;
       word-wrap: break-word;
-    }
-
-    .message.sent .message-bubble {
-      background: linear-gradient(135deg, #00f7ff, #0088ff);
-      color: #000;
-      border-bottom-right-radius: 4px;
-    }
-
-    .message.received .message-bubble {
       background: #1a1a3e;
       color: #fff;
       border-bottom-left-radius: 4px;
     }
 
+    .message.own .message-bubble {
+      background: linear-gradient(135deg, #00ff88, #00cc66);
+      color: #000;
+      border-bottom-right-radius: 4px;
+      border-bottom-left-radius: 15px;
+    }
+
+    .message.admin .message-bubble {
+      background: linear-gradient(135deg, #ffd700, #ff6600);
+      color: #000;
+      border: 2px solid #ffaa00;
+    }
+
     .message-time {
       font-size: 0.7rem;
-      opacity: 0.7;
+      color: #666;
       margin-top: 3px;
     }
 
+    .message.own .message-time { text-align: right; }
+
+    /* Input Area */
     .chat-input-area {
       padding: 15px;
       background: #111133;
@@ -224,20 +318,31 @@
     .chat-input:focus { border-color: #00f7ff; }
 
     .send-btn {
-      width: 45px;
-      height: 45px;
-      border-radius: 50%;
+      padding: 12px 25px;
       background: linear-gradient(135deg, #00f7ff, #0088ff);
       border: none;
       color: #000;
-      font-size: 1.2rem;
+      font-size: 1rem;
+      font-weight: bold;
       cursor: pointer;
       transition: all 0.3s ease;
+      border-radius: 25px;
     }
 
     .send-btn:hover {
-      transform: scale(1.1);
+      transform: scale(1.05);
       box-shadow: 0 0 15px rgba(0, 247, 255, 0.5);
+    }
+
+    .rules-box {
+      background: rgba(255, 165, 0, 0.1);
+      border: 1px solid #ffa500;
+      border-radius: 10px;
+      padding: 12px 15px;
+      margin-top: 15px;
+      font-size: 0.85rem;
+      color: #ffa500;
+      text-align: center;
     }
 
     .back-btn {
@@ -263,46 +368,68 @@
     }
 
     .footer span { color: #00f7ff; font-weight: bold; }
+
+    @media (max-width: 600px) {
+      .chat-body { height: 400px; }
+      .message-content { max-width: 80%; }
+      .message-avatar { width: 32px; height: 32px; font-size: 0.85rem; }
+      .header h1 { font-size: 1.4rem; }
+      .send-btn { padding: 10px 15px; }
+    }
   </style>
 </head>
 <body>
   <div class="container">
 
     <div class="header">
-      <h1>💬 Chat with Shyam Sir</h1>
-      <p>Koi bhi doubt ho, direct puch!</p>
+      <h1>💬 Python Class Community</h1>
+      <p>Sab ek saath baat karo, sab ka doubt yahi solve!</p>
       <div class="brand">Code With #Shyam</div>
     </div>
 
-    <!-- Name Entry Screen -->
+    <!-- Name Entry -->
     <div class="name-screen" id="nameScreen">
-      <h2>👋 Chat Start Karo!</h2>
+      <h2>👋 Community Join Karo!</h2>
       <div class="input-group">
         <label>Tera Naam:</label>
-        <input type="text" id="userName" placeholder="Jaise: Prashant" />
+        <input type="text" id="userName" placeholder="Jaise: Prashant" maxlength="20" />
       </div>
       <div class="input-group">
         <label>Class / Roll No:</label>
-        <input type="text" id="userClass" placeholder="Jaise: Class 10" />
+        <input type="text" id="userClass" placeholder="Jaise: Class 10" maxlength="15" />
       </div>
-      <button class="start-btn" onclick="startChat()">Chat Start Karo 💬</button>
+      <button class="start-btn" onclick="joinChat()">Community Join Karo 🚀</button>
+
+      <div class="rules-box">
+        📋 <strong>Rules:</strong> Respectful raho, gaali nahi dena, spam mat karo!
+      </div>
     </div>
 
-    <!-- Chat Interface -->
+    <!-- Chat -->
     <div class="chat-container" id="chatContainer">
       <div class="chat-header">
-        <div class="chat-avatar">S</div>
-        <div class="chat-header-info">
-          <h3>Shyam Sir</h3>
-          <span><span class="status-dot"></span>Online</span>
+        <div class="chat-header-left">
+          <div class="group-icon">🐍</div>
+          <div class="chat-header-info">
+            <h3>Python Learners Group</h3>
+            <span id="memberCount">Loading...</span>
+          </div>
+        </div>
+        <div class="online-badge">
+          <span class="status-dot"></span>
+          <span id="onlineCount">Live</span>
         </div>
       </div>
 
-      <div class="chat-body" id="chatBody"></div>
+      <div class="chat-body" id="chatBody">
+        <div style="text-align:center; color:#666; padding:20px;">
+          Loading messages...
+        </div>
+      </div>
 
       <div class="chat-input-area">
-        <input type="text" class="chat-input" id="chatInput" placeholder="Message likho..." onkeypress="if(event.key==='Enter') sendMessage()" />
-        <button class="send-btn" onclick="sendMessage()">➤</button>
+        <input type="text" class="chat-input" id="chatInput" placeholder="Message likho..." maxlength="500" onkeypress="if(event.key==='Enter') sendMessage()" />
+        <button class="send-btn" onclick="sendMessage()">Send ➤</button>
       </div>
     </div>
 
@@ -316,10 +443,9 @@
 
   </div>
 
-  <!-- Firebase Scripts -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-    import { getDatabase, ref, push, onValue, set } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+    import { getDatabase, ref, push, onValue, set, onDisconnect, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyC8QH1r20GnrSpY9jfxaZKbxSX7OOwA5AY",
@@ -338,12 +464,28 @@
     let userClass = '';
     let userId = '';
 
-    window.startChat = function() {
+    // Avatar colors
+    const avatarColors = [
+      '#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#6c5ce7',
+      '#a29bfe', '#fd79a8', '#00b894', '#e17055', '#0984e3'
+    ];
+
+    function getAvatarColor(name) {
+      const index = name.charCodeAt(0) % avatarColors.length;
+      return avatarColors[index];
+    }
+
+    window.joinChat = function() {
       const name = document.getElementById('userName').value.trim();
       const cls = document.getElementById('userClass').value.trim();
 
       if (!name || !cls) {
-        alert('Please naam aur class dono bhar!');
+        alert('Naam aur class dono bhar bhai!');
+        return;
+      }
+
+      if (name.length < 2) {
+        alert('Naam thoda bada rakh!');
         return;
       }
 
@@ -351,26 +493,22 @@
       userClass = cls;
       userId = name.toLowerCase().replace(/\s+/g, '_') + '_' + Date.now();
 
-      // Save user info
-      localStorage.setItem('chatUserId', userId);
-      localStorage.setItem('chatUserName', userName);
-      localStorage.setItem('chatUserClass', userClass);
+      localStorage.setItem('communityUserId', userId);
+      localStorage.setItem('communityUserName', userName);
+      localStorage.setItem('communityUserClass', userClass);
 
       document.getElementById('nameScreen').style.display = 'none';
       document.getElementById('chatContainer').classList.add('active');
 
-      // Welcome message
-      addMessage('👋 Hello ' + userName + '! Main Shyam hu. Bata kya doubt hai?', 'received');
-
-      // Load previous messages
-      loadMessages();
+      loadCommunityChat();
+      trackOnlineStatus();
     };
 
-    // Auto-login if returning user
+    // Auto-login
     window.addEventListener('DOMContentLoaded', () => {
-      const savedId = localStorage.getItem('chatUserId');
-      const savedName = localStorage.getItem('chatUserName');
-      const savedClass = localStorage.getItem('chatUserClass');
+      const savedId = localStorage.getItem('communityUserId');
+      const savedName = localStorage.getItem('communityUserName');
+      const savedClass = localStorage.getItem('communityUserClass');
 
       if (savedId && savedName) {
         userId = savedId;
@@ -380,7 +518,8 @@
         document.getElementById('nameScreen').style.display = 'none';
         document.getElementById('chatContainer').classList.add('active');
 
-        loadMessages();
+        loadCommunityChat();
+        trackOnlineStatus();
       }
     });
 
@@ -389,66 +528,120 @@
       const message = input.value.trim();
       if (!message) return;
 
-      const messagesRef = ref(db, 'chats/' + userId + '/messages');
+      const messagesRef = ref(db, 'community/messages');
       push(messagesRef, {
         text: message,
-        sender: 'student',
         senderName: userName,
         senderClass: userClass,
+        senderId: userId,
+        isAdmin: false,
         timestamp: Date.now()
-      });
-
-      // Save user info to database
-      set(ref(db, 'chats/' + userId + '/info'), {
-        name: userName,
-        class: userClass,
-        lastActive: Date.now()
       });
 
       input.value = '';
     };
 
-    function loadMessages() {
-      const messagesRef = ref(db, 'chats/' + userId + '/messages');
+    function loadCommunityChat() {
+      const messagesRef = ref(db, 'community/messages');
       onValue(messagesRef, (snapshot) => {
         const chatBody = document.getElementById('chatBody');
         chatBody.innerHTML = '';
 
-        // Welcome message
-        addMessage('👋 Hello ' + userName + '! Main Shyam hu. Bata kya doubt hai?', 'received');
-
         const data = snapshot.val();
-        if (data) {
-          Object.values(data).sort((a, b) => a.timestamp - b.timestamp).forEach(msg => {
-            addMessage(msg.text, msg.sender === 'student' ? 'sent' : 'received', msg.timestamp);
-          });
+        if (!data) {
+          chatBody.innerHTML = '<div style="text-align:center; color:#666; padding:40px;">🎉 Community abhi khali hai. Pehla message tu bhej!</div>';
+          return;
         }
+
+        const messages = Object.values(data).sort((a, b) => a.timestamp - b.timestamp);
+        let lastDate = '';
+
+        messages.forEach(msg => {
+          const msgDate = new Date(msg.timestamp).toLocaleDateString('en-IN');
+          if (msgDate !== lastDate) {
+            const separator = document.createElement('div');
+            separator.className = 'date-separator';
+            separator.innerHTML = `<span>📅 ${msgDate}</span>`;
+            chatBody.appendChild(separator);
+            lastDate = msgDate;
+          }
+
+          addMessage(msg);
+        });
+
+        chatBody.scrollTop = chatBody.scrollHeight;
       });
     }
 
-    function addMessage(text, type, timestamp) {
+    function addMessage(msg) {
       const chatBody = document.getElementById('chatBody');
       const messageDiv = document.createElement('div');
-      messageDiv.className = 'message ' + type;
+      const isOwn = msg.senderId === userId;
+      const isAdmin = msg.isAdmin === true;
 
-      let time = '';
-      if (timestamp) {
-        const d = new Date(timestamp);
-        time = d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
-      } else {
-        const now = new Date();
-        time = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
-      }
+      let className = 'message';
+      if (isOwn) className += ' own';
+      if (isAdmin) className += ' admin';
+      messageDiv.className = className;
+
+      const time = new Date(msg.timestamp);
+      const timeStr = time.getHours().toString().padStart(2,'0') + ':' + time.getMinutes().toString().padStart(2,'0');
+
+      const avatarLetter = (msg.senderName || 'U')[0].toUpperCase();
+      const avatarColor = isAdmin ? '#ffd700' : getAvatarColor(msg.senderName || 'User');
 
       messageDiv.innerHTML = `
-        <div>
-          <div class="message-bubble">${text}</div>
-          <div class="message-time">${time}</div>
+        <div class="message-avatar" style="background: ${avatarColor};">
+          ${avatarLetter}
+        </div>
+        <div class="message-content">
+          <div class="message-info">
+            <span class="message-name">${escapeHtml(msg.senderName || 'Unknown')}</span>
+            ${isAdmin ? '<span class="admin-badge">👑 SHYAM SIR</span>' : `<span class="message-class">${escapeHtml(msg.senderClass || '')}</span>`}
+          </div>
+          <div class="message-bubble">${escapeHtml(msg.text)}</div>
+          <div class="message-time">${timeStr}</div>
         </div>
       `;
 
       chatBody.appendChild(messageDiv);
-      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Track online users
+    function trackOnlineStatus() {
+      const userStatusRef = ref(db, 'community/online/' + userId);
+      set(userStatusRef, {
+        name: userName,
+        class: userClass,
+        lastSeen: Date.now()
+      });
+
+      // Remove on disconnect
+      onDisconnect(userStatusRef).remove();
+
+      // Count online users
+      const onlineRef = ref(db, 'community/online');
+      onValue(onlineRef, (snapshot) => {
+        const data = snapshot.val();
+        const count = data ? Object.keys(data).length : 0;
+        document.getElementById('onlineCount').textContent = count + ' online';
+        document.getElementById('memberCount').textContent = count + ' members active';
+      });
+
+      // Update presence every 30 sec
+      setInterval(() => {
+        set(userStatusRef, {
+          name: userName,
+          class: userClass,
+          lastSeen: Date.now()
+        });
+      }, 30000);
     }
   </script>
 </body>
