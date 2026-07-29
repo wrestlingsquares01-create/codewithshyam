@@ -138,17 +138,6 @@
         }
 
         /* ===== SIDE CHARACTERS ===== */
-        .side-char {
-            width: 120px;
-            flex-shrink: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-end;
-            padding-bottom: 20px;
-            position: relative;
-        }
-
         .modi-side {
             position: fixed;
             bottom: 20px;
@@ -253,7 +242,19 @@
         .welcome-subtitle {
             color: var(--text2);
             font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .powered-by {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(249,115,22,0.15), rgba(236,72,153,0.15));
+            border: 1px solid rgba(249,115,22,0.3);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            color: var(--orange);
             margin-bottom: 20px;
+            font-weight: 600;
         }
 
         /* ===== QUICK SUGGESTIONS ===== */
@@ -318,7 +319,6 @@
             border-radius: 10px;
         }
 
-        /* Message Bubbles */
         .message {
             display: flex;
             gap: 12px;
@@ -377,6 +377,7 @@
             border-radius: 18px;
             line-height: 1.6;
             font-size: 14px;
+            word-wrap: break-word;
         }
 
         .ai-bubble {
@@ -391,7 +392,6 @@
             border-radius: 18px 4px 18px 18px;
         }
 
-        /* Code blocks inside messages */
         .msg-bubble pre {
             margin: 12px 0;
             border-radius: 10px;
@@ -402,6 +402,16 @@
         .msg-bubble pre code {
             font-family: 'Fira Code', monospace !important;
             font-size: 13px !important;
+            padding: 12px !important;
+            display: block;
+            overflow-x: auto;
+        }
+
+        .code-block-wrapper {
+            margin: 12px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
         .code-header {
@@ -435,7 +445,6 @@
             background: rgba(0,247,255,0.2);
         }
 
-        /* Inline code */
         .msg-bubble code:not(pre code) {
             background: rgba(0,247,255,0.1);
             color: var(--cyan);
@@ -445,7 +454,6 @@
             font-size: 13px;
         }
 
-        /* Bold, lists etc */
         .msg-bubble strong {
             color: var(--cyan);
             font-weight: 700;
@@ -464,7 +472,6 @@
             margin: 4px 0;
         }
 
-        /* Typing indicator */
         .typing-indicator {
             display: flex;
             align-items: center;
@@ -490,7 +497,6 @@
             30% { transform: translateY(-8px); opacity: 1; }
         }
 
-        /* ===== STREAMING CURSOR ===== */
         .cursor {
             display: inline-block;
             width: 2px;
@@ -556,6 +562,7 @@
             transition: all 0.3s;
             flex-shrink: 0;
             font-size: 18px;
+            color: white;
         }
         .send-btn:hover {
             transform: scale(1.05);
@@ -596,7 +603,6 @@
             color: var(--pink);
         }
 
-        /* ===== MOBILE RESPONSIVE ===== */
         @media (max-width: 768px) {
             .modi-side, .bapu-side,
             .modi-dialogue, .bapu-dialogue {
@@ -613,7 +619,6 @@
             }
         }
 
-        /* ===== ERROR MESSAGE ===== */
         .error-bubble {
             background: rgba(239,68,68,0.1);
             border: 1px solid rgba(239,68,68,0.3);
@@ -621,18 +626,6 @@
             padding: 12px 16px;
             border-radius: 12px;
             font-size: 13px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* ===== HISTORY BADGE ===== */
-        .history-info {
-            text-align: center;
-            color: var(--text2);
-            font-size: 11px;
-            padding: 8px;
-            margin-bottom: 10px;
         }
 
         .history-divider {
@@ -667,7 +660,7 @@
         <span class="header-title">🤖 AI Tutor</span>
     </div>
     <div class="header-badge">
-        <span>●</span> Online
+        <span>⚡</span> Groq Powered
     </div>
 </header>
 
@@ -693,12 +686,12 @@
 <div class="main-layout">
     <div class="chat-area">
 
-        <!-- Welcome + Suggestions (sirf tab dikhega jab koi message nahi) -->
         <div class="welcome-section" id="welcomeSection">
             <div class="welcome-title">🤖 AI Doubt Solver</div>
             <div class="welcome-subtitle">
-                Koi bhi Python doubt poocho — Hindi mein simple explanation milega! 🐍
+                Koi bhi Python doubt poocho — Shyam Sir AI turant reply karega! 🐍
             </div>
+            <div class="powered-by">⚡ Powered by Groq (Super Fast!)</div>
 
             <div class="suggestions-grid">
                 <button class="suggestion-btn" onclick="sendSuggestion(this)">
@@ -746,12 +739,8 @@
             </div>
         </div>
 
-        <!-- Messages -->
-        <div class="messages-container" id="messagesContainer">
-            <!-- Messages yahan aayenge -->
-        </div>
+        <div class="messages-container" id="messagesContainer"></div>
 
-        <!-- Input Area -->
         <div class="input-area">
             <div class="input-wrapper">
                 <textarea
@@ -776,45 +765,51 @@
 
 <script>
     // ============================================
-    // 🔑 APNI API KEY YAHAN DAALO
+    // 🔑 GROQ API KEY
     // ============================================
-    const GEMINI_API_KEY = "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";
+    const GROQ_API_KEY = "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";
+    const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
+    const MODEL = "llama-3.3-70b-versatile"; // Fast + Smart
+
     // ============================================
-
-    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:streamGenerateContent?key=${GEMINI_API_KEY}&alt=sse`;
-
-    // System prompt - AI ki personality define karta hai
+    // System Prompt - Shyam Sir AI ki personality
+    // ============================================
     const SYSTEM_PROMPT = `Tu "Shyam Sir AI" hai — ek dost jaisa Python tutor jo students ko bilkul simple aur mast tarike se padhata hai.
 
 TERI PERSONALITY:
 - Naam: Shyam Sir AI 🤖
-- Style: Friendly, motivating, enthusiastic
-- Language: Hinglish (Hindi + English mix) — bilkul natural, jaise dost baat karta ho
-- Emojis: Hamesha use kar — iske bina answer adhoora hai!
+- Style: Friendly, motivating, enthusiastic dost jaisa
+- Language: HAMESHA Hinglish (Hindi + English mix) — bilkul natural bol jaise dost baat karta ho
+- Emojis: Har answer mein emojis use kar (🔥 🚀 💪 🎯 ✨ 🐍 💡)
 - Tone: Encouraging, kabhi scold mat kar
 
-IMPORTANT RULES:
-1. SHORT aur CRISP answers de — zyada lamba mat likho
-2. Hamesha real Python CODE examples de with classmate names
-3. Classmate names use kar: Prashant, Aham, Aditya, Nishant (aur kabhi kabhi Babita Mam)
-4. Complex cheezein real life se compare karke samjhao
-5. Har answer mein thoda motivation zaroor daal
-6. Sirf Python/programming questions answer kar. Agar koi Python se bahar poocha, politely bol "Bhai, main sirf Python ka expert hoon! 😄"
-
-ANSWER FORMAT:
-- Pehle ek line mein SIMPLE explanation
-- Phir code example (agar relevant ho)
-- Last mein ek motivating line ya fun fact
+STRICT RULES:
+1. Answer HAMESHA Hinglish mein do — NEVER pure English mein
+2. SHORT aur CRISP answers do — zyada lamba mat likho (max 150 words)
+3. Hamesha real Python CODE examples do with classmate names
+4. Classmate names use kar: Prashant, Aham, Aditya, Nishant (aur kabhi Babita Mam - teacher)
+5. Complex cheezein real life se compare karke samjhao (jaise cricket, khaana, school)
+6. Har answer ke end mein ek motivating line ya emoji zaroor daal
+7. Sirf Python/programming questions answer kar. Non-Python ke liye politely bol "Bhai, main sirf Python expert hoon! 😄"
 
 CODE EXAMPLES STYLE:
+- Code blocks mein classmate ke naam use kar
+- Comments Hindi/Hinglish mein likh
+Example:
 \`\`\`python
-# Example: Classmate ka naam use karo
+# Prashant ka score check karte hain
 prashant_score = 95
 if prashant_score > 90:
     print("Prashant ne top kiya! 🎉")
 \`\`\`
 
-YAD RAKH: Tu bahut friendly hai, students se darr nahi lagta. Woh khul ke doubt pooch sakते hain!`;
+ANSWER FORMAT:
+1. Ek line mein SIMPLE explanation (Hinglish mein)
+2. Code example (agar relevant hai)
+3. Real-life example ya analogy
+4. Motivating end line
+
+YAAD RAKH: Tu Shyam Sir ka AI version hai — students tumse darr nahi rahe, khul ke doubt pooch rahe hain! 🔥`;
 
     // ============================================
     // Chat History (localStorage)
@@ -822,41 +817,44 @@ YAD RAKH: Tu bahut friendly hai, students se darr nahi lagta. Woh khul ke doubt 
     let chatHistory = [];
 
     function loadHistory() {
-        const saved = localStorage.getItem('aiTutorHistory');
+        const saved = localStorage.getItem('shyamAIHistory');
         if (saved) {
-            chatHistory = JSON.parse(saved);
-            if (chatHistory.length > 0) {
-                hideWelcome();
-                // Divider dikhao
-                const divider = document.createElement('div');
-                divider.className = 'history-divider';
-                divider.textContent = '📚 Purani Chat History';
-                document.getElementById('messagesContainer').appendChild(divider);
+            try {
+                chatHistory = JSON.parse(saved);
+                if (chatHistory.length > 0) {
+                    hideWelcome();
+                    const divider = document.createElement('div');
+                    divider.className = 'history-divider';
+                    divider.textContent = '📚 Purani Chat History';
+                    document.getElementById('messagesContainer').appendChild(divider);
 
-                chatHistory.forEach(msg => {
-                    if (msg.role === 'user') {
-                        appendMessage('user', msg.parts[0].text, false);
-                    } else {
-                        appendMessage('ai', msg.parts[0].text, false);
-                    }
-                });
-                scrollToBottom();
+                    chatHistory.forEach(msg => {
+                        if (msg.role === 'user') {
+                            appendMessage('user', msg.content, false);
+                        } else if (msg.role === 'assistant') {
+                            appendMessage('ai', msg.content, false);
+                        }
+                    });
+                    scrollToBottom();
+                }
+            } catch(e) {
+                console.error('History load error:', e);
+                chatHistory = [];
             }
         }
     }
 
     function saveHistory() {
-        // Sirf last 20 messages save karo
         if (chatHistory.length > 20) {
             chatHistory = chatHistory.slice(-20);
         }
-        localStorage.setItem('aiTutorHistory', JSON.stringify(chatHistory));
+        localStorage.setItem('shyamAIHistory', JSON.stringify(chatHistory));
     }
 
     function clearHistory() {
         if (confirm('Bhai, poori chat history delete ho jaayegi! Pakka?')) {
             chatHistory = [];
-            localStorage.removeItem('aiTutorHistory');
+            localStorage.removeItem('shyamAIHistory');
             document.getElementById('messagesContainer').innerHTML = '';
             showWelcome();
         }
@@ -867,16 +865,12 @@ YAD RAKH: Tu bahut friendly hai, students se darr nahi lagta. Woh khul ke doubt 
     // ============================================
     function hideWelcome() {
         const ws = document.getElementById('welcomeSection');
-        if (ws) {
-            ws.style.display = 'none';
-        }
+        if (ws) ws.style.display = 'none';
     }
 
     function showWelcome() {
         const ws = document.getElementById('welcomeSection');
-        if (ws) {
-            ws.style.display = 'block';
-        }
+        if (ws) ws.style.display = 'block';
     }
 
     function scrollToBottom() {
@@ -897,11 +891,11 @@ YAD RAKH: Tu bahut friendly hai, students se darr nahi lagta. Woh khul ke doubt 
     }
 
     // ============================================
-    // Message Rendering
+    // Markdown Processing
     // ============================================
     function processMarkdown(text) {
-        // Code blocks process karo
-        text = text.replace(/```(\w+)?\n([\s\S]*?)```/g, (match, lang, code) => {
+        // Code blocks
+        text = text.replace(/```(\w+)?\n?([\s\S]*?)```/g, (match, lang, code) => {
             const language = lang || 'python';
             const escapedCode = code.trim()
                 .replace(/&/g, '&amp;')
@@ -923,19 +917,21 @@ YAD RAKH: Tu bahut friendly hai, students se darr nahi lagta. Woh khul ke doubt 
         text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
 
         // Italic
-        text = text.replace(/\*(.+?)\*/g, '<em>$1</em>');
+        text = text.replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, '<em>$1</em>');
 
         // Lists
         text = text.replace(/^[\s]*[-*] (.+)$/gm, '<li>$1</li>');
-        text = text.replace(/((<li>.*<\/li>\n?)+)/g, '<ul>$1</ul>');
-
-        // Numbered lists
         text = text.replace(/^\d+\. (.+)$/gm, '<li>$1</li>');
+        text = text.replace(/(<li>.*?<\/li>\s*)+/gs, '<ul>$&</ul>');
 
         // Line breaks
         text = text.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>');
         text = '<p>' + text + '</p>';
         text = text.replace(/<p><\/p>/g, '');
+        text = text.replace(/<p>(<div class="code-block-wrapper">)/g, '$1');
+        text = text.replace(/(<\/div>)<\/p>/g, '$1');
+        text = text.replace(/<p>(<ul>)/g, '$1');
+        text = text.replace(/(<\/ul>)<\/p>/g, '$1');
 
         return text;
     }
@@ -967,7 +963,6 @@ YAD RAKH: Tu bahut friendly hai, students se darr nahi lagta. Woh khul ke doubt 
         msgDiv.appendChild(contentDiv);
         container.appendChild(msgDiv);
 
-        // Highlight code blocks
         msgDiv.querySelectorAll('pre code').forEach(block => {
             hljs.highlightElement(block);
         });
@@ -1025,9 +1020,6 @@ YAD RAKH: Tu bahut friendly hai, students se darr nahi lagta. Woh khul ke doubt 
         });
     }
 
-    // ============================================
-    // Suggestion Button Click
-    // ============================================
     function sendSuggestion(btn) {
         const text = btn.querySelector('.suggestion-text').lastChild.textContent.trim();
         document.getElementById('userInput').value = text;
@@ -1035,7 +1027,7 @@ YAD RAKH: Tu bahut friendly hai, students se darr nahi lagta. Woh khul ke doubt 
     }
 
     // ============================================
-    // MAIN: Send Message + Streaming
+    // MAIN: Send Message with Groq API (Streaming!)
     // ============================================
     let isStreaming = false;
 
@@ -1047,12 +1039,7 @@ YAD RAKH: Tu bahut friendly hai, students se darr nahi lagta. Woh khul ke doubt 
         const userText = input.value.trim();
 
         if (!userText) return;
-        if (GEMINI_API_KEY === 'AQ.Ab8RN6Kai-vPybB5CHq6pF4cOER2yxltVleY6VvgtIdvpWrPWA') {
-            alert('⚠️ Bhai! Pehle apni Gemini API Key daalo ai.html mein!');
-            return;
-        }
 
-        // UI clear karo
         input.value = '';
         input.style.height = 'auto';
         hideWelcome();
@@ -1060,55 +1047,46 @@ YAD RAKH: Tu bahut friendly hai, students se darr nahi lagta. Woh khul ke doubt 
         sendBtn.disabled = true;
         sendBtn.textContent = '⏳';
 
-        // User message dikhao
         appendMessage('user', userText);
 
-        // History mein add karo
         chatHistory.push({
             role: 'user',
-            parts: [{ text: userText }]
+            content: userText
         });
 
-        // Typing indicator
         showTypingIndicator();
 
         try {
-            // API Request banao
+            // Groq API messages format
             const messages = [
-                // System prompt as first user message (Gemini ka tarika)
-                {
-                    role: 'user',
-                    parts: [{ text: SYSTEM_PROMPT }]
-                },
-                {
-                    role: 'model',
-                    parts: [{ text: 'Bilkul bhai! Main Shyam Sir AI hoon — tera Python dost! 🤖🔥 Poocho jo bhi doubt hai!' }]
-                },
+                { role: 'system', content: SYSTEM_PROMPT },
                 ...chatHistory
             ];
 
-            const response = await fetch(API_URL, {
+            const response = await fetch(GROQ_API_URL, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${GROQ_API_KEY}`
+                },
                 body: JSON.stringify({
-                    contents: messages,
-                    generationConfig: {
-                        temperature: 0.8,
-                        maxOutputTokens: 1024,
-                        topP: 0.95,
-                    }
+                    model: MODEL,
+                    messages: messages,
+                    temperature: 0.8,
+                    max_tokens: 1024,
+                    top_p: 0.95,
+                    stream: true
                 })
             });
 
             if (!response.ok) {
                 const err = await response.json();
-                throw new Error(err.error?.message || 'API Error');
+                throw new Error(err.error?.message || `API Error: ${response.status}`);
             }
 
-            // Typing indicator hatao, AI bubble banao
             removeTypingIndicator();
 
-            // Streaming response handle karo
+            // Create AI message bubble for streaming
             const container = document.getElementById('messagesContainer');
             const msgDiv = document.createElement('div');
             msgDiv.className = 'message ai';
@@ -1135,60 +1113,60 @@ YAD RAKH: Tu bahut friendly hai, students se darr nahi lagta. Woh khul ke doubt 
             container.appendChild(msgDiv);
             scrollToBottom();
 
-            // SSE Stream read karo
+            // Read streaming response (Groq uses OpenAI format SSE)
             const reader = response.body.getReader();
             const decoder = new TextDecoder();
             let fullText = '';
+            let buffer = '';
 
             while (true) {
                 const { done, value } = await reader.read();
                 if (done) break;
 
-                const chunk = decoder.decode(value);
-                const lines = chunk.split('\n');
+                buffer += decoder.decode(value, { stream: true });
+                const lines = buffer.split('\n');
+                buffer = lines.pop() || '';
 
                 for (const line of lines) {
-                    if (line.startsWith('data: ')) {
-                        const data = line.slice(6).trim();
-                        if (data === '[DONE]') continue;
-                        try {
-                            const parsed = JSON.parse(data);
-                            const text = parsed.candidates?.[0]?.content?.parts?.[0]?.text || '';
-                            if (text) {
-                                fullText += text;
-                                // Live update
-                                bubbleDiv.innerHTML = processMarkdown(fullText) + '<span class="cursor"></span>';
-                                scrollToBottom();
-                            }
-                        } catch (e) {
-                            // Parse error skip karo
+                    const trimmed = line.trim();
+                    if (!trimmed || !trimmed.startsWith('data: ')) continue;
+                    
+                    const data = trimmed.slice(6);
+                    if (data === '[DONE]') continue;
+                    
+                    try {
+                        const parsed = JSON.parse(data);
+                        const content = parsed.choices?.[0]?.delta?.content || '';
+                        if (content) {
+                            fullText += content;
+                            bubbleDiv.innerHTML = processMarkdown(fullText) + '<span class="cursor"></span>';
+                            scrollToBottom();
                         }
+                    } catch (e) {
+                        // Skip parse errors
                     }
                 }
             }
 
-            // Final render (cursor hatao)
+            // Final render without cursor
             bubbleDiv.innerHTML = processMarkdown(fullText);
             bubbleDiv.querySelectorAll('pre code').forEach(block => {
                 hljs.highlightElement(block);
             });
             scrollToBottom();
 
-            // History mein AI response save karo
             chatHistory.push({
-                role: 'model',
-                parts: [{ text: fullText }]
+                role: 'assistant',
+                content: fullText
             });
             saveHistory();
 
-            // Modi dialogue update karo
             updateModiDialogue();
 
         } catch (error) {
             removeTypingIndicator();
             console.error('Error:', error);
 
-            // Error message dikhao
             const container = document.getElementById('messagesContainer');
             const msgDiv = document.createElement('div');
             msgDiv.className = 'message ai';
@@ -1197,9 +1175,9 @@ YAD RAKH: Tu bahut friendly hai, students se darr nahi lagta. Woh khul ke doubt 
                 <div class="msg-content">
                     <div class="msg-name">Shyam Sir AI 🤖</div>
                     <div class="error-bubble">
-                        ⚠️ Oops! Kuch problem aa gayi bhai...<br>
-                        <small>${error.message}</small><br>
-                        <small>API key check karo ya thodi der baad try karo!</small>
+                        ⚠️ <strong>Oops! Kuch problem aa gayi bhai...</strong><br><br>
+                        <small><strong>Error:</strong> ${error.message}</small><br>
+                        <small>💡 Solution: API key check karo, ya thodi der baad try karo!</small>
                     </div>
                 </div>
             `;
@@ -1213,17 +1191,18 @@ YAD RAKH: Tu bahut friendly hai, students se darr nahi lagta. Woh khul ke doubt 
     }
 
     // ============================================
-    // Modi Dialogues
+    // Modi Dialogues (Rotating)
     // ============================================
     const modiDialogues = [
         "Ek sawaal poocho! 🔥",
         "Python seekhna easy hai! 💪",
         "Bhai, code karo! 🚀",
         "Doubt mat rakhna! 🎯",
-        "Aage badho! Seekhte raho! ⚡",
+        "Aage badho! ⚡",
         "Prashant bhi yahi seekha! 😄",
         "AI se daro mat! 🤖",
         "Python = Superpower! 🐍",
+        "Groq super fast hai! ⚡"
     ];
     let dialogueIndex = 0;
 
@@ -1235,9 +1214,7 @@ YAD RAKH: Tu bahut friendly hai, students se darr nahi lagta. Woh khul ke doubt 
 
     setInterval(updateModiDialogue, 4000);
 
-    // ============================================
     // Page Load
-    // ============================================
     window.onload = function() {
         loadHistory();
     };
