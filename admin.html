@@ -80,7 +80,6 @@
       display: none;
     }
 
-    /* Admin Chat */
     .admin-dashboard { display: none; }
     .admin-dashboard.active { display: block; }
 
@@ -108,6 +107,17 @@
       border-radius: 20px;
       cursor: pointer;
       font-weight: bold;
+    }
+
+    .admin-notice {
+      background: rgba(255, 215, 0, 0.1);
+      border: 1px solid #ffd700;
+      color: #ffd700;
+      padding: 12px 15px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      text-align: center;
+      font-size: 0.9rem;
     }
 
     .chat-container {
@@ -203,6 +213,7 @@
       display: flex;
       animation: messageIn 0.3s ease;
       gap: 10px;
+      position: relative;
     }
 
     @keyframes messageIn {
@@ -225,7 +236,10 @@
       font-size: 1rem;
     }
 
-    .message-content { max-width: 70%; }
+    .message-content { 
+      max-width: 70%; 
+      position: relative;
+    }
 
     .message.own .message-content {
       align-items: flex-end;
@@ -274,8 +288,38 @@
       border: 2px solid #ffaa00;
     }
 
+    .message-bubble.deleted {
+      background: #2a2a2a !important;
+      color: #666 !important;
+      font-style: italic;
+      border: 1px dashed #555 !important;
+    }
+
     .message-time { font-size: 0.7rem; color: #666; margin-top: 3px; }
     .message.own .message-time { text-align: right; }
+
+    /* Admin Delete Button - Har message pe dikhega */
+    .admin-delete-btn {
+      background: linear-gradient(135deg, #ff4444, #cc0000);
+      color: white;
+      border: none;
+      padding: 5px 12px;
+      border-radius: 15px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      font-weight: bold;
+      margin-top: 6px;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(255, 68, 68, 0.4);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .admin-delete-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(255, 68, 68, 0.6);
+    }
 
     .chat-input-area {
       padding: 15px;
@@ -336,6 +380,10 @@
         <button class="logout-btn" onclick="logout()">Logout</button>
       </div>
 
+      <div class="admin-notice">
+        ⚡ <strong>Admin Power:</strong> Tu KOI BHI message delete kar sakta hai — har message ke neeche 🗑️ Delete button dikhega!
+      </div>
+
       <div class="chat-container">
         <div class="chat-header">
           <div class="chat-header-left">
@@ -366,7 +414,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-    import { getDatabase, ref, push, onValue, set, onDisconnect } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+    import { getDatabase, ref, push, onValue, set, onDisconnect, update, remove } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyC8QH1r20GnrSpY9jfxaZKbxSX7OOwA5AY",
@@ -426,10 +474,31 @@
         senderClass: 'Teacher',
         senderId: adminId,
         isAdmin: true,
+        deleted: false,
         timestamp: Date.now()
       });
 
       input.value = '';
+    };
+
+    // ===== ADMIN CAN DELETE ANY MESSAGE =====
+    window.deleteAnyMessage = function(msgKey, senderName) {
+      if (!confirm(`Admin power use karke "${senderName}" ka ye message delete karna hai? 🗑️`)) return;
+      
+      const msgRef = ref(db, 'community/messages/' + msgKey);
+      update(msgRef, {
+        deleted: true,
+        text: '',
+        deletedBy: 'admin'
+      });
+    };
+
+    // ===== PERMANENTLY DELETE (Complete remove) =====
+    window.permanentDelete = function(msgKey) {
+      if (!confirm('⚠️ PERMANENTLY delete karna hai? Ye database se completely hat jayega!')) return;
+      
+      const msgRef = ref(db, 'community/messages/' + msgKey);
+      remove(msgRef);
     };
 
     const avatarColors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#6c5ce7', '#a29bfe', '#fd79a8', '#00b894'];
@@ -451,7 +520,11 @@
           return;
         }
 
-        const messages = Object.values(data).sort((a, b) => a.timestamp - b.timestamp);
+        const messages = Object.entries(data).map(([key, msg]) => ({
+          ...msg,
+          _key: key
+        })).sort((a, b) => a.timestamp - b.timestamp);
+
         let lastDate = '';
 
         messages.forEach(msg => {
@@ -475,6 +548,7 @@
       const messageDiv = document.createElement('div');
       const isOwn = msg.senderId === adminId;
       const isAdmin = msg.isAdmin === true;
+      const isDeleted = msg.deleted === true;
 
       let className = 'message';
       if (isOwn) className += ' own';
@@ -486,6 +560,26 @@
       const avatarLetter = (msg.senderName || 'U')[0].toUpperCase();
       const avatarColor = isAdmin ? '#ffd700' : getAvatarColor(msg.senderName || 'User');
 
+      const bubbleContent = isDeleted 
+        ? '<div class="message-bubble deleted">🗑️ Message deleted</div>'
+        : `<div class="message-bubble">${escapeHtml(msg.text)}</div>`;
+
+      // Admin ke pass DELETE + PERMANENT DELETE dono option
+      let adminActions = '';
+      if (!isDeleted) {
+        adminActions = `
+          <button class="admin-delete-btn" onclick="deleteAnyMessage('${msg._key}', '${escapeHtml(msg.senderName || 'Unknown').replace(/'/g, "\\'")}')">
+            🗑️ Delete
+          </button>
+        `;
+      } else {
+        adminActions = `
+          <button class="admin-delete-btn" onclick="permanentDelete('${msg._key}')" style="background: linear-gradient(135deg, #666, #333);">
+            ❌ Permanent Delete
+          </button>
+        `;
+      }
+
       messageDiv.innerHTML = `
         <div class="message-avatar" style="background: ${avatarColor};">${avatarLetter}</div>
         <div class="message-content">
@@ -493,8 +587,9 @@
             <span class="message-name">${escapeHtml(msg.senderName || 'Unknown')}</span>
             ${isAdmin ? '<span class="admin-badge">👑 SHYAM SIR</span>' : `<span class="message-class">${escapeHtml(msg.senderClass || '')}</span>`}
           </div>
-          <div class="message-bubble">${escapeHtml(msg.text)}</div>
+          ${bubbleContent}
           <div class="message-time">${timeStr}</div>
+          ${adminActions}
         </div>
       `;
 
