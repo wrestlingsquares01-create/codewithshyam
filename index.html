@@ -16,15 +16,16 @@
     }
 
     body {
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
       background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #000000);
       background-size: 400% 400%;
       animation: bgMove 15s ease infinite;
-      overflow: hidden;
+      overflow-x: hidden;
       color: white;
+      padding: 20px 0;
     }
 
     @keyframes bgMove {
@@ -176,6 +177,7 @@
       opacity: 1;
       transform: translateY(0);
       pointer-events: auto;
+      position: relative;
     }
 
     .menu-title {
@@ -217,12 +219,98 @@
       justify-content: center;
       gap: 10px;
       backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
     }
 
     .btn:hover {
       transform: translateY(-5px);
       box-shadow: 0 0 30px rgba(0, 247, 255, 0.5);
       background: rgba(0, 247, 255, 0.1);
+    }
+
+    /* ============================ */
+    /* ✨ AI BUTTON - SPECIAL PREMIUM ✨ */
+    /* ============================ */
+    .btn-ai {
+      background: linear-gradient(135deg, 
+        rgba(0, 247, 255, 0.15), 
+        rgba(124, 58, 237, 0.15), 
+        rgba(236, 72, 153, 0.15));
+      border: 2px solid transparent;
+      background-clip: padding-box;
+      position: relative;
+      animation: aiPulse 2s ease-in-out infinite;
+    }
+
+    .btn-ai::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      padding: 2px;
+      background: linear-gradient(135deg, #00f7ff, #7c3aed, #ec4899, #00f7ff);
+      background-size: 300% 300%;
+      border-radius: 8px;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      animation: gradientMove 3s linear infinite;
+      pointer-events: none;
+    }
+
+    .btn-ai::after {
+      content: 'NEW';
+      position: absolute;
+      top: -8px;
+      right: 10px;
+      background: linear-gradient(135deg, #ff0080, #ff8c00);
+      color: white;
+      font-size: 0.65rem;
+      font-weight: 900;
+      padding: 3px 8px;
+      border-radius: 10px;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 15px rgba(255, 0, 128, 0.5);
+      animation: badgeBounce 1.5s ease-in-out infinite;
+    }
+
+    .btn-ai:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 
+        0 0 40px rgba(0, 247, 255, 0.5),
+        0 0 60px rgba(124, 58, 237, 0.4);
+    }
+
+    .btn-ai .ai-icon {
+      font-size: 1.4rem;
+      animation: aiIconRotate 3s ease-in-out infinite;
+      display: inline-block;
+    }
+
+    @keyframes aiPulse {
+      0%, 100% { 
+        box-shadow: 0 0 20px rgba(0, 247, 255, 0.3);
+      }
+      50% { 
+        box-shadow: 0 0 35px rgba(124, 58, 237, 0.5);
+      }
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes badgeBounce {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-3px) scale(1.1); }
+    }
+
+    @keyframes aiIconRotate {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-10deg); }
+      75% { transform: rotate(10deg); }
     }
 
     /* Modi on Index */
@@ -285,6 +373,7 @@
       .subtitle { font-size: 0.8rem; letter-spacing: 2px; }
       .modi-index { width: 120px; bottom: 10px; right: 10px; }
       .speech-index { bottom: 140px; right: 5px; font-size: 0.75rem; max-width: 140px; }
+      .btn-ai::after { font-size: 0.55rem; padding: 2px 6px; }
     }
   </style>
 </head>
@@ -297,12 +386,15 @@
 
   <div class="menu" id="menu">
     <div class="menu-title">Select Chapter</div>
-        <div class="buttons">
+    <div class="buttons">
       <a href="chapter1.html" class="btn">
         <span>📖</span> Chapter 1 - Python Basics
       </a>
       <a href="chapter2.html" class="btn">
         <span>📘</span> Chapter 2 - Variables & Operators
+      </a>
+      <a href="ai.html" class="btn btn-ai">
+        <span class="ai-icon">🤖</span> AI Doubt Solver
       </a>
       <a href="help.html" class="btn" style="border-color: #ff6600;">
         <span>💬</span> Community Chat
@@ -311,6 +403,7 @@
         <span>🔒</span> Chapter 3 (Coming Soon)
       </a>
     </div>
+  </div>
     
   <img src="modi.png" alt="" class="modi-index" id="modiIndex" />
   <div class="speech-index" id="speechIndex">Mitron, Python Seekho! 🇮🇳</div>
@@ -330,7 +423,9 @@
       "Coding ka zamana hai!",
       "Shyam sir se seekho! 😎",
       "Chapter 1 start karo!",
-      "Digital India, Coding India!"
+      "Digital India, Coding India!",
+      "AI se doubt poocho! 🤖",
+      "Naya AI feature try karo! ✨"
     ];
     let idxDlg = 0;
     setInterval(function () {
