@@ -36,7 +36,6 @@
     .header p { color: #aaa; font-size: 0.95rem; }
     .header .brand { color: #fff; font-weight: bold; margin-top: 5px; }
 
-    /* Name Entry Screen */
     .name-screen {
       background: #111133;
       border-radius: 15px;
@@ -99,7 +98,6 @@
       box-shadow: 0 0 20px rgba(0, 247, 255, 0.5);
     }
 
-    /* Community Chat Interface */
     .chat-container {
       background: #111133;
       border-radius: 15px;
@@ -177,7 +175,6 @@
       border-radius: 10px;
     }
 
-    /* Date Separator */
     .date-separator {
       text-align: center;
       margin: 15px 0;
@@ -193,12 +190,12 @@
       border: 1px solid #333;
     }
 
-    /* Messages */
     .message {
       margin-bottom: 15px;
       display: flex;
       animation: messageIn 0.3s ease;
       gap: 10px;
+      position: relative;
     }
 
     @keyframes messageIn {
@@ -223,6 +220,7 @@
 
     .message-content {
       max-width: 70%;
+      position: relative;
     }
 
     .message.own .message-content {
@@ -287,6 +285,13 @@
       border: 2px solid #ffaa00;
     }
 
+    .message-bubble.deleted {
+      background: #2a2a2a !important;
+      color: #666 !important;
+      font-style: italic;
+      border: 1px dashed #555 !important;
+    }
+
     .message-time {
       font-size: 0.7rem;
       color: #666;
@@ -295,7 +300,55 @@
 
     .message.own .message-time { text-align: right; }
 
-    /* Input Area */
+    /* Delete Button */
+    .message-actions {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      display: flex;
+      gap: 5px;
+      z-index: 10;
+    }
+
+    .message.own .message-actions {
+      right: auto;
+      left: -10px;
+    }
+
+    .message.own:hover .message-actions {
+      opacity: 1;
+    }
+
+    .delete-btn {
+      background: #ff4444;
+      color: white;
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 10px rgba(255, 68, 68, 0.5);
+    }
+
+    .delete-btn:hover {
+      background: #cc0000;
+      transform: scale(1.15);
+    }
+
+    /* Mobile: always show delete on own messages */
+    @media (max-width: 768px) {
+      .message.own .message-actions {
+        opacity: 1;
+      }
+    }
+
     .chat-input-area {
       padding: 15px;
       background: #111133;
@@ -387,7 +440,6 @@
       <div class="brand">Code With #Shyam</div>
     </div>
 
-    <!-- Name Entry -->
     <div class="name-screen" id="nameScreen">
       <h2>👋 Community Join Karo!</h2>
       <div class="input-group">
@@ -401,11 +453,11 @@
       <button class="start-btn" onclick="joinChat()">Community Join Karo 🚀</button>
 
       <div class="rules-box">
-        📋 <strong>Rules:</strong> Respectful raho, gaali nahi dena, spam mat karo!
+        📋 <strong>Rules:</strong> Respectful raho, gaali nahi dena, spam mat karo!<br>
+        💡 <strong>Tip:</strong> Apne message pe hover karke delete kar sakte ho!
       </div>
     </div>
 
-    <!-- Chat -->
     <div class="chat-container" id="chatContainer">
       <div class="chat-header">
         <div class="chat-header-left">
@@ -445,7 +497,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-    import { getDatabase, ref, push, onValue, set, onDisconnect, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+    import { getDatabase, ref, push, onValue, set, onDisconnect, update, remove } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyC8QH1r20GnrSpY9jfxaZKbxSX7OOwA5AY",
@@ -464,7 +516,6 @@
     let userClass = '';
     let userId = '';
 
-    // Avatar colors
     const avatarColors = [
       '#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#6c5ce7',
       '#a29bfe', '#fd79a8', '#00b894', '#e17055', '#0984e3'
@@ -504,7 +555,6 @@
       trackOnlineStatus();
     };
 
-    // Auto-login
     window.addEventListener('DOMContentLoaded', () => {
       const savedId = localStorage.getItem('communityUserId');
       const savedName = localStorage.getItem('communityUserName');
@@ -535,10 +585,22 @@
         senderClass: userClass,
         senderId: userId,
         isAdmin: false,
+        deleted: false,
         timestamp: Date.now()
       });
 
       input.value = '';
+    };
+
+    // ===== DELETE MESSAGE =====
+    window.deleteMessage = function(msgKey) {
+      if (!confirm('Ye message delete karna hai? 🗑️')) return;
+      
+      const msgRef = ref(db, 'community/messages/' + msgKey);
+      update(msgRef, {
+        deleted: true,
+        text: ''
+      });
     };
 
     function loadCommunityChat() {
@@ -553,7 +615,11 @@
           return;
         }
 
-        const messages = Object.values(data).sort((a, b) => a.timestamp - b.timestamp);
+        const messages = Object.entries(data).map(([key, msg]) => ({
+          ...msg,
+          _key: key
+        })).sort((a, b) => a.timestamp - b.timestamp);
+
         let lastDate = '';
 
         messages.forEach(msg => {
@@ -578,6 +644,7 @@
       const messageDiv = document.createElement('div');
       const isOwn = msg.senderId === userId;
       const isAdmin = msg.isAdmin === true;
+      const isDeleted = msg.deleted === true;
 
       let className = 'message';
       if (isOwn) className += ' own';
@@ -590,6 +657,16 @@
       const avatarLetter = (msg.senderName || 'U')[0].toUpperCase();
       const avatarColor = isAdmin ? '#ffd700' : getAvatarColor(msg.senderName || 'User');
 
+      const bubbleContent = isDeleted 
+        ? '<div class="message-bubble deleted">🗑️ Message deleted</div>'
+        : `<div class="message-bubble">${escapeHtml(msg.text)}</div>`;
+
+      const deleteButton = (isOwn && !isDeleted) 
+        ? `<div class="message-actions">
+            <button class="delete-btn" onclick="deleteMessage('${msg._key}')" title="Delete message">🗑️</button>
+          </div>` 
+        : '';
+
       messageDiv.innerHTML = `
         <div class="message-avatar" style="background: ${avatarColor};">
           ${avatarLetter}
@@ -599,8 +676,9 @@
             <span class="message-name">${escapeHtml(msg.senderName || 'Unknown')}</span>
             ${isAdmin ? '<span class="admin-badge">👑 SHYAM SIR</span>' : `<span class="message-class">${escapeHtml(msg.senderClass || '')}</span>`}
           </div>
-          <div class="message-bubble">${escapeHtml(msg.text)}</div>
+          ${bubbleContent}
           <div class="message-time">${timeStr}</div>
+          ${deleteButton}
         </div>
       `;
 
@@ -613,7 +691,6 @@
       return div.innerHTML;
     }
 
-    // Track online users
     function trackOnlineStatus() {
       const userStatusRef = ref(db, 'community/online/' + userId);
       set(userStatusRef, {
@@ -622,10 +699,8 @@
         lastSeen: Date.now()
       });
 
-      // Remove on disconnect
       onDisconnect(userStatusRef).remove();
 
-      // Count online users
       const onlineRef = ref(db, 'community/online');
       onValue(onlineRef, (snapshot) => {
         const data = snapshot.val();
@@ -634,7 +709,6 @@
         document.getElementById('memberCount').textContent = count + ' members active';
       });
 
-      // Update presence every 30 sec
       setInterval(() => {
         set(userStatusRef, {
           name: userName,
